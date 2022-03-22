@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import SearchBar from "./SearchBar";
 import { Outlet } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "./hooks";
 import { fetchGeoLocationByIp } from "./locationSlice";
@@ -16,6 +17,7 @@ const Navbar = () => {
     <div>
       <h1>Weather</h1>
       <div className="Location">My current location: {location} </div>
+      <SearchBar />
       <Outlet />
     </div>
   );
