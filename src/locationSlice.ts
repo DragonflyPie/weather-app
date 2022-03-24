@@ -5,6 +5,13 @@ import {
   PayloadAction,
 } from "@reduxjs/toolkit";
 
+interface Location {
+  city: string;
+  regionName: string;
+  lat: string;
+  lon: string;
+}
+
 export const fetchGeoLocationByIp = createAsyncThunk(
   "location/locationByIp",
   async (_) => {
@@ -16,43 +23,34 @@ export const fetchGeoLocationByIp = createAsyncThunk(
   }
 );
 
-export const fetchLocationByName = createAsyncThunk(
-  "location/locationByName",
-  async (query) => {
-    const response = await fetch(
-      `http://api.openweathermap.org/geo/1.0/direct?q=${query}&limit=5&appid=e1b93cfee3fe37089c6071cf4de071ad`
-    );
-    const data = await response.json();
-    return data;
-  }
-);
-
 export interface locationState {
   status: "idle" | "loading" | "succeeded" | "failed";
   value: {
-    lat: number;
-    lon: number;
     city: string;
-    country: string;
-    countryCode: string;
+    regionName: string;
+    lat: string;
+    lon: string;
   };
 }
 
 const initialState: locationState = {
   status: "idle",
   value: {
-    lat: 55.7512,
-    lon: 37.6184,
     city: "Moscow",
-    country: "Russia",
-    countryCode: "RU",
+    regionName: "",
+    lat: "55.7512",
+    lon: "37.6184",
   },
 };
 
 export const locationSlice = createSlice({
   name: "location",
   initialState,
-  reducers: {},
+  reducers: {
+    updateLocation: (state, action: PayloadAction<Location>) => {
+      state.value = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchGeoLocationByIp.pending, (state, action) => {
       state.status = "loading";
@@ -64,19 +62,9 @@ export const locationSlice = createSlice({
     builder.addCase(fetchGeoLocationByIp.rejected, (state, action) => {
       state.status = "failed";
     });
-
-    builder.addCase(fetchLocationByName.pending, (state, action) => {
-      state.status = "loading";
-    });
-    builder.addCase(fetchLocationByName.fulfilled, (state, action) => {
-      state.status = "succeeded";
-    });
-    builder.addCase(fetchLocationByName.rejected, (state, action) => {
-      state.status = "loading";
-    });
   },
 });
 
-export const {} = locationSlice.actions;
+export const { updateLocation } = locationSlice.actions;
 
 export default locationSlice.reducer;

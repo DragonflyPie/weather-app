@@ -1,30 +1,52 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { JsxElement } from "typescript";
-
-import { apiKey, geoTreeKey, googleApiKey, tomTomApiKey } from "./apiKey";
-import { useAppSelector } from "./hooks";
-import SuggestionList from "./SuggestionList";
+import { updateLocation } from "./locationSlice";
+import { fetchNow } from "./weatherSlice";
+import { geoTreeKey, googleApiKey, tomTomApiKey } from "./apiKey";
+import { useAppSelector, useAppDispatch } from "./hooks";
+import SuggestionsList from "./SuggestionsList";
 // const key = process.env.REACT_APP_API_KEY;
+
+interface LocationGeoTree {
+  value: string;
+  geo_center: {
+    lat: string;
+    lon: string;
+  };
+}
+
+interface Location {
+  city: string;
+  regionName: string;
+  lat: string;
+  lon: string;
+}
 
 const SearchBar = () => {
   const [query, setQuery] = useState("");
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [activeSuggestionIndex, setActiveSuggestionIndex] = useState(-1);
   const [suggestions, setSuggestions] = useState([] as any[]);
   const [showDropdown, setShowDropdown] = useState(false);
   const [showSuggestionList, setShowSuggestionList] = useState(false);
+  const dispatch = useAppDispatch();
 
   let classNames = require("classnames");
+
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const currentLocation = useAppSelector((state) => state.location.value);
 
   const fetchPossibleLocations: () => Promise<void> = async () => {
+    setSuggestions([]);
     console.log("fetch triggered");
     if (query.length < 2) {
       return;
     }
     try {
+      setLoading(true);
       const response = await fetch(
         `https://api.geotree.ru/search.php?distance_priority=100&lon=${currentLocation.lon}&lat=${currentLocation.lat}&term=${query}&types=place&level=4&fields=value,geo_center&limit=10&key=${geoTreeKey}`
       );
@@ -36,20 +58,28 @@ const SearchBar = () => {
       } else if (error instanceof Error) {
         setError(error.message);
       }
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     const delayedSearch = setTimeout(() => {
       fetchPossibleLocations();
-    }, 1000);
+    }, 500);
     return () => clearTimeout(delayedSearch);
   }, [query]);
 
-  useEffect(() => {});
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setQuery(e.target.value);
     setShowDropdown(true);
+  };
+
+  const handleSuggestionClick = (e: LocationGeoTree): void => {
+    setShowDropdown(false);
+    let geoData = flattenGeoData(e);
+    fetchWeatherNow(geoData);
+    console.log(e);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>): void => {
@@ -65,7 +95,10 @@ const SearchBar = () => {
           : setActiveSuggestionIndex(activeSuggestionIndex - 1);
         break;
       case "Enter":
-        activeSuggestionIndex === -1
+        if (inputRef.current !== null) {
+          inputRef.current.blur();
+        }
+        activeSuggestionIndex === -1 || !showDropdown
           ? suggestPossibleOptions()
           : submitWeatherSearch(suggestions[activeSuggestionIndex]);
         break;
@@ -75,9 +108,27 @@ const SearchBar = () => {
     }
   };
 
-  const submitWeatherSearch = (e: object): void => {
+  const fetchWeatherNow: (e: Location) => Promise<void> = async (e) => {
+    dispatch(fetchNow(e));
+  };
+
+  const flattenGeoData = (e: LocationGeoTree): Location => {
+    let geoData: Location = {
+      city: e.value.split(",")[0].split(" ")[1],
+      regionName: e.value.split(",")[1],
+      lat: e.geo_center.lat,
+      lon: e.geo_center.lon,
+    };
+    return geoData;
+  };
+
+  const submitWeatherSearch = (e: LocationGeoTree): void => {
+    let geoData = flattenGeoData(e);
+
     setShowSuggestionList(false);
-    console.log(e);
+    setShowDropdown(false);
+    dispatch(updateLocation(geoData));
+    fetchWeatherNow(geoData);
   };
 
   const suggestPossibleOptions = (): void => {
@@ -94,7 +145,11 @@ const SearchBar = () => {
       });
 
       return (
-        <li key={location.value} className={suggestionClass}>
+        <li
+          key={location.value}
+          className={suggestionClass}
+          onClick={() => handleSuggestionClick(suggestions[index])}
+        >
           {location.value}
         </li>
       );
@@ -104,6 +159,7 @@ const SearchBar = () => {
     <div className="search">
       <input
         type="text"
+        ref={inputRef}
         className="search__input"
         value={query}
         onChange={handleChange}
@@ -112,9 +168,20 @@ const SearchBar = () => {
       />
       <div className="search__icon"></div>
       {showDropdown && (
-        <ul className="search__suggestions-list">{suggestionsDropDown}</ul>
+        <div className="search__dropdown">
+          {loading ? (
+            <div className="search__spinner">Loading</div>
+          ) : (
+            <ul className="search__dropdown">{suggestionsDropDown}</ul>
+          )}
+        </div>
       )}
-      {showSuggestionList && <SuggestionList suggestions={suggestions} />}
+      {showSuggestionList && (
+        <SuggestionsList
+          suggestions={suggestions}
+          onClick={handleSuggestionClick}
+        />
+      )}
       {/* {suggestions.length && <ul className="">{renderedSuggestions}</ul> } */}
     </div>
   );
