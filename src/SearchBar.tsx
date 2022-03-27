@@ -1,6 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
-import { JsxElement } from "typescript";
 import { updateLocation } from "./locationSlice";
 import { fetchNow } from "./weatherSlice";
 import { geoTreeKey, googleApiKey, tomTomApiKey } from "./apiKey";
@@ -28,7 +26,7 @@ const SearchBar = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [activeSuggestionIndex, setActiveSuggestionIndex] = useState(-1);
-  const [suggestions, setSuggestions] = useState([] as any[]);
+  const [suggestions, setSuggestions] = useState([] as LocationGeoTree[]);
   const [showDropdown, setShowDropdown] = useState(false);
   const [showSuggestionList, setShowSuggestionList] = useState(false);
   const dispatch = useAppDispatch();
@@ -75,11 +73,10 @@ const SearchBar = () => {
     setShowDropdown(true);
   };
 
-  const handleSuggestionClick = (e: LocationGeoTree): void => {
+  const handleSuggestionClick = (location: LocationGeoTree): void => {
+    let flatLocation = flattenGeoData(location);
     setShowDropdown(false);
-    let geoData = flattenGeoData(e);
-    fetchWeatherNow(geoData);
-    console.log(e);
+    fetchWeatherNow(flatLocation);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>): void => {
@@ -122,13 +119,12 @@ const SearchBar = () => {
     return geoData;
   };
 
-  const submitWeatherSearch = (e: LocationGeoTree): void => {
-    let geoData = flattenGeoData(e);
-
+  const submitWeatherSearch = (location: LocationGeoTree): void => {
+    let flatLocation = flattenGeoData(location);
     setShowSuggestionList(false);
     setShowDropdown(false);
-    dispatch(updateLocation(geoData));
-    fetchWeatherNow(geoData);
+    dispatch(updateLocation(flatLocation));
+    fetchWeatherNow(flatLocation);
   };
 
   const suggestPossibleOptions = (): void => {
