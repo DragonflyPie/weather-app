@@ -39,7 +39,6 @@ const SearchBar = () => {
 
   const fetchPossibleLocations: () => Promise<void> = async () => {
     setSuggestions([]);
-    console.log("fetch triggered");
     if (query.length < 2) {
       return;
     }
@@ -49,6 +48,7 @@ const SearchBar = () => {
         `https://api.geotree.ru/search.php?distance_priority=100&lon=${currentLocation.lon}&lat=${currentLocation.lat}&term=${query}&types=place&level=4&fields=value,geo_center&limit=10&key=${geoTreeKey}`
       );
       const data = await response.json();
+
       setSuggestions(data);
     } catch (error) {
       if (typeof error === "string") {
@@ -68,6 +68,10 @@ const SearchBar = () => {
     return () => clearTimeout(delayedSearch);
   }, [query]);
 
+  useEffect(() => {
+    dispatch(fetchNow(currentLocation));
+  }, [currentLocation, dispatch]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setQuery(e.target.value);
     setShowDropdown(true);
@@ -75,8 +79,8 @@ const SearchBar = () => {
 
   const handleSuggestionClick = (location: LocationGeoTree): void => {
     let flatLocation = flattenGeoData(location);
+    dispatch(updateLocation(flatLocation));
     setShowDropdown(false);
-    fetchWeatherNow(flatLocation);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>): void => {
@@ -105,10 +109,6 @@ const SearchBar = () => {
     }
   };
 
-  const fetchWeatherNow: (e: Location) => Promise<void> = async (e) => {
-    dispatch(fetchNow(e));
-  };
-
   const flattenGeoData = (e: LocationGeoTree): Location => {
     let geoData: Location = {
       city: e.value.split(",")[0].split(" ")[1],
@@ -124,7 +124,6 @@ const SearchBar = () => {
     setShowSuggestionList(false);
     setShowDropdown(false);
     dispatch(updateLocation(flatLocation));
-    fetchWeatherNow(flatLocation);
   };
 
   const suggestPossibleOptions = (): void => {
@@ -132,9 +131,12 @@ const SearchBar = () => {
     setShowSuggestionList(true);
   };
 
-  const suggestionsDropDown: JSX.Element[] = suggestions
-    .slice(0, 5)
-    .map((location, index) => {
+  const suggestionsDropDown: JSX.Element[] | JSX.Element | null = error ? (
+    <div className="">{error}</div>
+  ) : loading ? (
+    <div className="">LOADING...</div>
+  ) : suggestions.length ? (
+    suggestions.slice(0, 5).map((location, index) => {
       let suggestionClass = classNames({
         search__suggestion: true,
         "search__suggestion--active": index === activeSuggestionIndex,
@@ -149,7 +151,8 @@ const SearchBar = () => {
           {location.value}
         </li>
       );
-    });
+    })
+  ) : null;
 
   return (
     <div className="search">
@@ -165,14 +168,10 @@ const SearchBar = () => {
       <div className="search__icon"></div>
       {showDropdown && (
         <div className="search__dropdown">
-          {loading ? (
-            <div className="search__spinner">Loading</div>
-          ) : (
-            <ul className="search__dropdown">{suggestionsDropDown}</ul>
-          )}
+          <ul className="search__dropdown">{suggestionsDropDown}</ul>
         </div>
       )}
-      {showSuggestionList && (
+      {showSuggestionList && suggestions.length && (
         <SuggestionsList
           suggestions={suggestions}
           onClick={handleSuggestionClick}
