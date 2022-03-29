@@ -3,6 +3,7 @@ import SearchBar from "./SearchBar";
 import { Outlet } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "./hooks";
 import { fetchGeoLocationByIp } from "./locationSlice";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const dispatch = useAppDispatch();
@@ -11,9 +12,6 @@ const Navbar = () => {
 
   useEffect(() => {
     dispatch(fetchGeoLocationByIp());
-    console.log(location);
-
-    console.log(region);
   }, []);
 
   return (
@@ -25,6 +23,7 @@ const Navbar = () => {
       </div>
       <SearchBar />
       <Outlet />
+      <Link to="daily">daily</Link>
     </div>
   );
 };

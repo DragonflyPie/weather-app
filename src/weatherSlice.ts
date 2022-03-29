@@ -19,36 +19,81 @@ export const fetchNow = createAsyncThunk(
   }
 );
 
-export interface weatherState {
+interface Hour {
+  dt: number;
+  temp: number;
+  clouds: number;
+  wind: number;
+  wind_gust: number;
+  wind_deg: number;
+  pop: number;
+  rain: {
+    "1c": number;
+  };
+  snow: {
+    "1c": number;
+  };
+  weather: {
+    main: string;
+    description: string;
+  };
+}
+
+interface Day {
+  dt: number;
+  temp: {
+    min: number;
+    max: number;
+    night: number;
+  };
+  clouds: number;
+  humidity: number;
+  wind_speed: number;
+  wind_gust: number;
+  wind_deg: number;
+  pop: number;
+  rain: number;
+  snow: number;
+  weather: {
+    main: string;
+    description: string;
+  };
+}
+
+interface Current {
+  dt: number;
+  sunrise: number;
+  sunset: number;
+  temp: number;
+  pressure: number;
+  humidity: number;
+  clouds: number;
+  uvi: number;
+  visibility: number;
+  wind_speed: number;
+  wind_gust?: number;
+  wind_deg: number;
+  rain?: {
+    "1h"?: number;
+  };
+  snow?: {
+    "1h"?: number;
+  };
+  weather: {
+    main: string;
+    description: string;
+    icon_id: number;
+  };
+}
+
+export interface WeatherState {
   status: "idle" | "loading" | "succeeded" | "failed";
   value?: {
     timezone: string;
     timezone_offset: number;
-    current: {
-      dt: number;
-      sunrise: number;
-      sunset: number;
-      temp: number;
-      pressure: number;
-      humidity: number;
-      clouds: number;
-      uvi: number;
-      visibility: number;
-      wind_speed: number;
-      wind_gust?: number;
-      wind_deg: number;
-      rain?: {
-        "1h"?: number;
-      };
-      snow?: {
-        "1h"?: number;
-      };
-      weather: {
-        main: string;
-        description: string;
-        icon_id: number;
-      };
-    };
+    current: Current;
+    hourly: Hour[];
+    daily: Day[];
   };
 }
 
@@ -142,7 +187,7 @@ export interface weatherState {
 // daily.weather.description Weather condition within the group (full list of weather conditions). Get the output in your language
 // daily.weather.icon Weather icon id. How to get icons
 
-const initialState: weatherState = {
+const initialState: WeatherState = {
   status: "idle",
 };
 

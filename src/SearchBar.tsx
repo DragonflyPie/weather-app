@@ -37,36 +37,35 @@ const SearchBar = () => {
 
   const currentLocation = useAppSelector((state) => state.location.value);
 
-  const fetchPossibleLocations: () => Promise<void> = async () => {
-    setSuggestions([]);
-    if (query.length < 2) {
-      return;
-    }
-    try {
-      setLoading(true);
-      const response = await fetch(
-        `https://api.geotree.ru/search.php?distance_priority=100&lon=${currentLocation.lon}&lat=${currentLocation.lat}&term=${query}&types=place&level=4&fields=value,geo_center&limit=10&key=${geoTreeKey}`
-      );
-      const data = await response.json();
-
-      setSuggestions(data);
-    } catch (error) {
-      if (typeof error === "string") {
-        setError(error);
-      } else if (error instanceof Error) {
-        setError(error.message);
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const fetchPossibleLocations: () => Promise<void> = async () => {
+      setSuggestions([]);
+      if (query.length < 2) {
+        return;
+      }
+      try {
+        setLoading(true);
+        const response = await fetch(
+          `https://api.geotree.ru/search.php?distance_priority=75&lon=${currentLocation.lon}&lat=${currentLocation.lat}&term=${query}&types=place&level=4&fields=value,geo_center&limit=10&key=${geoTreeKey}`
+        );
+        const data = await response.json();
+
+        setSuggestions(data);
+      } catch (error) {
+        if (typeof error === "string") {
+          setError(error);
+        } else if (error instanceof Error) {
+          setError(error.message);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
     const delayedSearch = setTimeout(() => {
       fetchPossibleLocations();
     }, 500);
     return () => clearTimeout(delayedSearch);
-  }, [query]);
+  }, [query, currentLocation]);
 
   useEffect(() => {
     dispatch(fetchNow(currentLocation));
@@ -81,6 +80,7 @@ const SearchBar = () => {
     let flatLocation = flattenGeoData(location);
     dispatch(updateLocation(flatLocation));
     setShowDropdown(false);
+    setActiveSuggestionIndex(-1);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>): void => {
@@ -123,6 +123,7 @@ const SearchBar = () => {
     let flatLocation = flattenGeoData(location);
     setShowSuggestionList(false);
     setShowDropdown(false);
+    setActiveSuggestionIndex(-1);
     dispatch(updateLocation(flatLocation));
   };
 
@@ -131,7 +132,7 @@ const SearchBar = () => {
     setShowSuggestionList(true);
   };
 
-  const suggestionsDropDown: JSX.Element[] | JSX.Element | null = error ? (
+  const suggestionsDropDown: JSX.Element[] | JSX.Element = error ? (
     <div className="">{error}</div>
   ) : loading ? (
     <div className="">LOADING...</div>
@@ -152,7 +153,9 @@ const SearchBar = () => {
         </li>
       );
     })
-  ) : null;
+  ) : (
+    <div className="">Ничего не найдено</div>
+  );
 
   return (
     <div className="search">
