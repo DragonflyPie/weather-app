@@ -16,14 +16,14 @@ const Navbar = () => {
 
   return (
     <div>
-      <h1>Weather</h1>
       <div className="Location">
-        My current location: {location}
+        {location}
         {region && `, ${region}`}
       </div>
       <SearchBar />
+      <Link to="/">Сегодня</Link>
+      <Link to="daily">7 дней</Link>
       <Outlet />
-      <Link to="daily">daily</Link>
     </div>
   );
 };

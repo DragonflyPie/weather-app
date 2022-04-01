@@ -1,7 +1,7 @@
 import React from "react";
 import { useAppSelector } from "./hooks";
 import NextHours from "./NextHours";
-import { WeatherState } from "./weatherSlice";
+import { CgArrowLongDownC } from "react-icons/cg";
 
 const Today = () => {
   const weatherData = useAppSelector((state) => state.weather.value);
@@ -47,34 +47,60 @@ const Today = () => {
     minute: "2-digit",
   });
 
+  const windDirectionToString = (deg: number): string => {
+    if (deg < 15 || deg > 345) {
+      return "С";
+    }
+    if (deg < 75) {
+      return "С-В";
+    }
+    if (deg < 105) {
+      return "В";
+    }
+    if (deg < 165) {
+      return "Ю-В";
+    }
+    if (deg < 195) {
+      return "Ю";
+    }
+    if (deg < 255) {
+      return "Ю-З";
+    }
+    if (deg < 285) {
+      return "З";
+    } else {
+      return "С-З";
+    }
+  };
+
   const pressure = (weatherData.current.pressure * 0.750062).toFixed(0);
 
   return (
     <>
       <div className="today-grid">
         <div className="">{capitilizedDate}</div>
-        <div className="">{weatherData.current?.weather.main}</div>
-        <div className="">{weatherData.current?.weather.description}</div>
-
-        <div className="">Влажность: {weatherData.current?.humidity}%</div>
+        <div className="">{weatherData.current.weather[0].description}</div>
+        <div className="">Влажность: {weatherData.current.humidity}%</div>
         <div className="">Время: {localTime}</div>
-        <div className="">Температура: {weatherData.current?.temp}&#176;C</div>
+        <div className="">Температура: {weatherData.current.temp}&#176;C</div>
         <div className="">Давление: {pressure} мм рт. ст.</div>
         <div className="">Восход: {sunrise}</div>
         <div className="">Закат: {sunset}</div>
-        <div className="">Видимость: {weatherData.current?.visibility}</div>
+        <div className="">Видимость: {weatherData.current.visibility}</div>
         <div className="">
-          Направление ветра: {weatherData.current?.wind_deg}
+          Направление ветра:
+          {windDirectionToString(weatherData.current.wind_deg)}
+          <CgArrowLongDownC
+            style={{ transform: `rotate(${weatherData.current.wind_deg}deg)` }}
+          />
         </div>
-        <div className="">
-          Скорость ветра: {weatherData.current?.wind_speed}
-        </div>
+        <div className="">Скорость ветра: {weatherData.current.wind_speed}</div>
         {/* <div className="">Порывы ветра: {weatherData.current?.wind_gust}</div> */}
-        {weatherData.current?.rain && (
-          <div className="">Дождь: {weatherData.current?.rain?.["1h"]}</div>
+        {weatherData.current.rain && (
+          <div className="">Дождь: {weatherData.current.rain?.["1h"]}</div>
         )}
-        {weatherData.current?.snow && (
-          <div className="">Снег: {weatherData.current?.snow?.["1h"]}</div>
+        {weatherData.current.snow && (
+          <div className="">Снег: {weatherData.current.snow?.["1h"]}</div>
         )}
       </div>
       <NextHours weatherData={weatherData} />

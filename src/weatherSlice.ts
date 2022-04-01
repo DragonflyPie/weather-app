@@ -19,6 +19,11 @@ export const fetchNow = createAsyncThunk(
   }
 );
 
+interface WeatherDescription {
+  main: string;
+  description: string;
+}
+
 interface Hour {
   dt: number;
   temp: number;
@@ -27,16 +32,13 @@ interface Hour {
   wind_gust: number;
   wind_deg: number;
   pop: number;
-  rain: {
-    "1c": number;
+  rain?: {
+    "1h": number;
   };
-  snow: {
-    "1c": number;
+  snow?: {
+    "1h": number;
   };
-  weather: {
-    main: string;
-    description: string;
-  };
+  weather: WeatherDescription[];
 }
 
 interface Day {
@@ -52,12 +54,13 @@ interface Day {
   wind_gust: number;
   wind_deg: number;
   pop: number;
-  rain: number;
-  snow: number;
-  weather: {
-    main: string;
-    description: string;
+  rain?: {
+    "1h": number;
   };
+  snow?: {
+    "1h": number;
+  };
+  weather: WeatherDescription[];
 }
 
 interface Current {
@@ -74,22 +77,17 @@ interface Current {
   wind_gust?: number;
   wind_deg: number;
   rain?: {
-    "1h"?: number;
+    "1h": number;
   };
   snow?: {
-    "1h"?: number;
+    "1h": number;
   };
-  weather: {
-    main: string;
-    description: string;
-    icon_id: number;
-  };
+  weather: WeatherDescription[];
 }
 
 export interface WeatherState {
   status: "idle" | "loading" | "succeeded" | "failed";
   value?: {
-    timezone: string;
     timezone_offset: number;
     current: Current;
     hourly: Hour[];

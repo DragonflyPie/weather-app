@@ -15,6 +15,7 @@ const NextHours = ({ weatherData }: NextHoursProps) => {
   if (weatherData === undefined) {
     return <div className="">kek</div>;
   }
+
   const getHour = ({ dt, offset }: TimeProps): string => {
     return new Date((dt + offset) * 1000).toLocaleString("ru", {
       timeZone: "UTC",
@@ -35,6 +36,7 @@ const NextHours = ({ weatherData }: NextHoursProps) => {
           <div className="">{hour.temp}</div>
           <div className="">{hour.clouds}</div>
           <div className="">{hour.pop}</div>
+          <div className="">{hour.weather[0].description}</div>
         </div>
       ))}
     </div>

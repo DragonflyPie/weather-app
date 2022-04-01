@@ -25,7 +25,7 @@ export const fetchGeoLocationByIp = createAsyncThunk(
 
 export interface locationState {
   status: "idle" | "loading" | "succeeded" | "failed";
-  value: {
+  value?: {
     city: string;
     regionName: string;
     lat: string;
@@ -35,12 +35,6 @@ export interface locationState {
 
 const initialState: locationState = {
   status: "idle",
-  value: {
-    city: "Moscow",
-    regionName: "",
-    lat: "55.7512",
-    lon: "37.6184",
-  },
 };
 
 export const locationSlice = createSlice({

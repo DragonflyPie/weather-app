@@ -41,13 +41,18 @@ const SearchBar = () => {
     const fetchPossibleLocations: () => Promise<void> = async () => {
       setSuggestions([]);
       if (query.length < 2) {
+        setShowDropdown(false);
         return;
       }
       try {
         setLoading(true);
-        const response = await fetch(
-          `https://api.geotree.ru/search.php?distance_priority=75&lon=${currentLocation.lon}&lat=${currentLocation.lat}&term=${query}&types=place&level=4&fields=value,geo_center&limit=10&key=${geoTreeKey}`
-        );
+        const response = currentLocation
+          ? await fetch(
+              `https://api.geotree.ru/search.php?distance_priority=75&lon=${currentLocation.lon}&lat=${currentLocation.lat}&term=${query}&types=place&level=4&fields=value,geo_center&limit=10&key=${geoTreeKey}`
+            )
+          : await fetch(
+              `https://api.geotree.ru/search.php?term=${query}&types=place&level=4&fields=value,geo_center&limit=10&key=${geoTreeKey}`
+            );
         const data = await response.json();
 
         setSuggestions(data);
@@ -68,7 +73,9 @@ const SearchBar = () => {
   }, [query, currentLocation]);
 
   useEffect(() => {
-    dispatch(fetchNow(currentLocation));
+    if (currentLocation) {
+      dispatch(fetchNow(currentLocation));
+    }
   }, [currentLocation, dispatch]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -80,7 +87,9 @@ const SearchBar = () => {
     let flatLocation = flattenGeoData(location);
     dispatch(updateLocation(flatLocation));
     setShowDropdown(false);
+    setShowSuggestionList(false);
     setActiveSuggestionIndex(-1);
+    setQuery("");
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>): void => {
@@ -121,6 +130,7 @@ const SearchBar = () => {
 
   const submitWeatherSearch = (location: LocationGeoTree): void => {
     let flatLocation = flattenGeoData(location);
+    setQuery("");
     setShowSuggestionList(false);
     setShowDropdown(false);
     setActiveSuggestionIndex(-1);
@@ -166,7 +176,7 @@ const SearchBar = () => {
         value={query}
         onChange={handleChange}
         onKeyDown={handleKeyPress}
-        placeholder="Location..."
+        placeholder="Населенный пункт..."
       />
       <div className="search__icon"></div>
       {showDropdown && (
