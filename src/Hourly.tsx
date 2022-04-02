@@ -1,42 +1,27 @@
 import React, { useEffect } from "react";
 import { WeatherState } from "./weatherSlice";
 import { useAppSelector } from "./hooks";
+import { timeFromDate } from "./utils";
 
-type NextHoursProps = {
+type HourlyProps = {
   weatherData: WeatherState["value"];
 };
 
-interface TimeProps {
-  dt: number;
-  offset: number;
-}
-
-const Hourly = ({ weatherData }: NextHoursProps) => {
+const Hourly = ({ weatherData }: HourlyProps) => {
   if (weatherData === undefined) {
-    return <div className="">kek</div>;
+    return <div className="">No data</div>;
   }
-
-  const getHour = ({ dt, offset }: TimeProps): string => {
-    return new Date((dt + offset) * 1000).toLocaleString("ru", {
-      timeZone: "UTC",
-      hour12: false,
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
 
   const slicedHours = weatherData.hourly.slice(0, 13);
   return (
     <div className="hours">
       {slicedHours.map((hour) => (
-        <div key={hour.dt} className="">
-          <div className="">
-            {getHour({ dt: hour.dt, offset: weatherData.timezone_offset })}
-          </div>
+        <div key={timeFromDate(hour.dt)} className="">
+          <div className="">{timeFromDate(hour.dt)}</div>
           <div className="">{hour.temp}&#176;C</div>
           <div className="">{hour.clouds}</div>
           <div className="">{hour.pop}</div>
-          <div className="">{hour.weather[0].description}</div>
+          <div className="">{hour.weather}</div>
         </div>
       ))}
     </div>
