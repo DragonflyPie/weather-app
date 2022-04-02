@@ -6,7 +6,7 @@ interface TimeProps {
   offset: number;
 }
 
-const NextDays = () => {
+const Daily = () => {
   const weatherData = useAppSelector((state) => state.weather.value);
   if (!weatherData) {
     return null;
@@ -55,4 +55,4 @@ const NextDays = () => {
   );
 };
 
-export default NextDays;
+export default Daily;

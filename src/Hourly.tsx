@@ -11,7 +11,7 @@ interface TimeProps {
   offset: number;
 }
 
-const NextHours = ({ weatherData }: NextHoursProps) => {
+const Hourly = ({ weatherData }: NextHoursProps) => {
   if (weatherData === undefined) {
     return <div className="">kek</div>;
   }
@@ -33,7 +33,7 @@ const NextHours = ({ weatherData }: NextHoursProps) => {
           <div className="">
             {getHour({ dt: hour.dt, offset: weatherData.timezone_offset })}
           </div>
-          <div className="">{hour.temp}</div>
+          <div className="">{hour.temp}&#176;C</div>
           <div className="">{hour.clouds}</div>
           <div className="">{hour.pop}</div>
           <div className="">{hour.weather[0].description}</div>
@@ -43,4 +43,4 @@ const NextHours = ({ weatherData }: NextHoursProps) => {
   );
 };
 
-export default NextHours;
+export default Hourly;

@@ -1,6 +1,6 @@
 import React from "react";
 import { useAppSelector } from "./hooks";
-import NextHours from "./NextHours";
+import Hourly from "./Hourly";
 import { CgArrowLongDownC } from "react-icons/cg";
 
 const Today = () => {
@@ -103,7 +103,7 @@ const Today = () => {
           <div className="">Снег: {weatherData.current.snow?.["1h"]}</div>
         )}
       </div>
-      <NextHours weatherData={weatherData} />
+      <Hourly weatherData={weatherData} />
     </>
   );
 };
