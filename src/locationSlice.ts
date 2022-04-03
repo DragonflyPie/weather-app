@@ -1,16 +1,5 @@
-import {
-  createAsyncThunk,
-  createSlice,
-  isRejectedWithValue,
-  PayloadAction,
-} from "@reduxjs/toolkit";
-
-interface Location {
-  city: string;
-  regionName: string;
-  lat: string;
-  lon: string;
-}
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Location } from "./types";
 
 export const fetchGeoLocationByIp = createAsyncThunk(
   "location/locationByIp",

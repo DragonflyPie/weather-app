@@ -20,3 +20,29 @@ export const dayFromDate = (dt: number): string => {
 
   return stringifyDate[0].toUpperCase() + stringifyDate.slice(1);
 };
+
+export const windDirectionToString = (deg: number): string => {
+  if (deg < 15 || deg > 345) {
+    return "С";
+  }
+  if (deg < 75) {
+    return "С-В";
+  }
+  if (deg < 105) {
+    return "В";
+  }
+  if (deg < 165) {
+    return "Ю-В";
+  }
+  if (deg < 195) {
+    return "Ю";
+  }
+  if (deg < 255) {
+    return "Ю-З";
+  }
+  if (deg < 285) {
+    return "З";
+  } else {
+    return "С-З";
+  }
+};

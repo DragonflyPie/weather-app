@@ -5,10 +5,12 @@
   padding: 0;
   margin: 0;
 }
+
 .search__dropdown {
   position: fixed;
   background-color: antiquewhite;
 }
+
 .search__suggestion--active {
   background-color: aqua;
 }
