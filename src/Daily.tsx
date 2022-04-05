@@ -9,7 +9,7 @@ const Daily = () => {
   }
 
   return (
-    <div>
+    <div className="daily">
       {weatherData.daily.map((day) => (
         <div className="" key={dayFromDate(day.dt)}>
           <div className="">{dayFromDate(day.dt)}</div>

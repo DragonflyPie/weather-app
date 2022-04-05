@@ -4,14 +4,14 @@ import Hourly from "./Hourly";
 import { CgArrowLongDownC } from "react-icons/cg";
 import { convertPressure, dayFromDate, timeFromDate } from "./utils";
 
-const Today = () => {
+const Current = () => {
   const weatherData = useAppSelector((state) => state.weather.value);
   if (!weatherData) {
-    return <div className="">Nothing to show</div>;
+    return <div className="current">Nothing to show</div>;
   }
 
   return (
-    <>
+    <div className="current">
       <div className="today-grid">
         <div className="">{dayFromDate(weatherData.current.dt)}</div>
         <div className="">{weatherData.current.weather}</div>
@@ -45,8 +45,8 @@ const Today = () => {
         )}
       </div>
       <Hourly weatherData={weatherData} />
-    </>
+    </div>
   );
 };
 
-export default Today;
+export default Current;

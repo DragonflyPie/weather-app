@@ -140,3 +140,11 @@ export interface WeatherData {
   hourly: Hour[];
   daily: Day[];
 }
+
+export interface LocationGeoTree {
+  value: string;
+  geo_center: {
+    lat: string;
+    lon: string;
+  };
+}

@@ -1,16 +1,18 @@
 import { Route, Routes } from "react-router-dom";
-import "./App.css";
+import "./App.scss";
 import Navbar from "./Navbar";
 import Daily from "./Daily";
-import Today from "./Today";
+import Current from "./Current";
+import Suggestions from "./Suggestions";
 
 function App() {
   return (
-    <div className="App">
+    <div className="app">
       <Routes>
         <Route path="/" element={<Navbar />}>
-          <Route index element={<Today />} />
+          <Route index element={<Current />} />
           <Route path="daily" element={<Daily />} />
+          <Route path="suggestions" element={<Suggestions />} />
         </Route>
       </Routes>
     </div>

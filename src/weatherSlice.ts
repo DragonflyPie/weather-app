@@ -69,7 +69,7 @@ const flattenWeatherData = (data: RawWeatherData): WeatherData => {
       sunrise: data.current.sunrise + data.timezone_offset,
       sunset: data.current.sunset + data.timezone_offset,
       temp: data.current.temp,
-      pressure: data.current.temp,
+      pressure: data.current.pressure,
       humidity: data.current.humidity,
       clouds: data.current.clouds,
       uvi: data.current.uvi,

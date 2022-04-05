@@ -4,29 +4,21 @@ import { fetchNow } from "./weatherSlice";
 import { geoTreeKey, googleApiKey, tomTomApiKey } from "./apiKey";
 import { useAppSelector, useAppDispatch } from "./hooks";
 import SuggestionsList from "./SuggestionsList";
+import { LocationGeoTree, Location } from "./types";
+import { useNavigate } from "react-router-dom";
 // const key = process.env.REACT_APP_API_KEY;
 
-interface LocationGeoTree {
-  value: string;
-  geo_center: {
-    lat: string;
-    lon: string;
-  };
-}
+type SearchBarProps = {
+  suggestions: LocationGeoTree[];
+  setSuggestions: React.Dispatch<React.SetStateAction<LocationGeoTree[]>>;
+};
 
-interface Location {
-  city: string;
-  regionName: string;
-  lat: string;
-  lon: string;
-}
-
-const SearchBar = () => {
+const SearchBar = ({ suggestions, setSuggestions }: SearchBarProps) => {
+  const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [activeSuggestionIndex, setActiveSuggestionIndex] = useState(-1);
-  const [suggestions, setSuggestions] = useState([] as LocationGeoTree[]);
   const [showDropdown, setShowDropdown] = useState(false);
   const [showSuggestionList, setShowSuggestionList] = useState(false);
   const dispatch = useAppDispatch();
@@ -139,7 +131,7 @@ const SearchBar = () => {
 
   const suggestPossibleOptions = (): void => {
     setShowDropdown(false);
-    setShowSuggestionList(true);
+    navigate("suggestions");
   };
 
   const suggestionsDropDown: JSX.Element[] | JSX.Element = error ? (
@@ -168,7 +160,7 @@ const SearchBar = () => {
   );
 
   return (
-    <div className="search">
+    <div className="search navbar__search">
       <input
         type="text"
         ref={inputRef}
