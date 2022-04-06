@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react";
-import SearchBar from "./SearchBar";
+import SearchBar from "../searchBar/SearchBar";
 import { Outlet } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "./hooks";
-import { fetchGeoLocationByIp } from "./locationSlice";
+import { useAppDispatch, useAppSelector } from "../../utilities/hooks";
+import { fetchGeoLocationByIp } from "../../redux/locationSlice";
 import { NavLink } from "react-router-dom";
 import { WiDayFog } from "react-icons/wi";
-import { LocationGeoTree } from "./types";
 
 const Navbar = () => {
-  const [suggestions, setSuggestions] = useState([] as LocationGeoTree[]);
   const dispatch = useAppDispatch();
   const location = useAppSelector((state) => state.location.value?.city);
   const region = useAppSelector((state) => state.location.value?.regionName);
@@ -27,7 +25,7 @@ const Navbar = () => {
             {region && `, ${region}`}
           </div>
         </div>
-        <SearchBar suggestions={suggestions} setSuggestions={setSuggestions} />
+        <SearchBar />
         <div className="navbar__links-bar">
           <NavLink
             to="/"
@@ -47,7 +45,7 @@ const Navbar = () => {
           </NavLink>
         </div>
       </div>
-      <Outlet context={suggestions} />
+      <Outlet />
     </>
   );
 };

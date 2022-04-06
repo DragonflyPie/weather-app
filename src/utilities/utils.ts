@@ -1,3 +1,5 @@
+import type { LocationGeoTree, Location } from "./types";
+
 export const convertPressure = (pressureInHPa: number): string => {
   return (pressureInHPa * 0.750062).toFixed(0);
 };
@@ -45,4 +47,14 @@ export const windDirectionToString = (deg: number): string => {
   } else {
     return "С-З";
   }
+};
+
+export const flattenGeoData = (e: LocationGeoTree): Location => {
+  let geoData: Location = {
+    city: e.value.split(",")[0].split(" ")[1],
+    regionName: e.value.split(",")[1],
+    lat: e.geo_center.lat,
+    lon: e.geo_center.lon,
+  };
+  return geoData;
 };

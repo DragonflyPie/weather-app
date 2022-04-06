@@ -1,5 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { weatherApiKey } from "./apiKey";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   Hour,
   HourRaw,
@@ -9,14 +8,17 @@ import {
   WeatherData,
   RawWeatherData,
   Current,
-} from "./types";
-import { windDirectionToString } from "./utils";
+} from "../utilities/types";
+import { windDirectionToString } from "../utilities/utils";
+import { weatherApiKey as key } from "../apiKey";
 
-export const fetchNow = createAsyncThunk(
+// const key = process.env.REACT_APP_OPENWEATHER_API_KEY;
+
+export const fetchWeatherData = createAsyncThunk(
   "weather/now",
   async (location: Location) => {
     const response = await fetch(
-      `https://api.openweathermap.org/data/2.5/onecall?lat=${location.lat}&lon=${location.lon}&units=metric&appid=${weatherApiKey}`
+      `https://api.openweathermap.org/data/2.5/onecall?lat=${location.lat}&lon=${location.lon}&units=metric&appid=${key}`
     );
     const data = await response.json();
     return data;
@@ -107,14 +109,14 @@ export const weatherSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchNow.pending, (state, action) => {
+    builder.addCase(fetchWeatherData.pending, (state, action) => {
       state.status = "loading";
     });
-    builder.addCase(fetchNow.fulfilled, (state, action) => {
+    builder.addCase(fetchWeatherData.fulfilled, (state, action) => {
       state.status = "succeeded";
       state.value = flattenWeatherData(action.payload);
     });
-    builder.addCase(fetchNow.rejected, (state, action) => {
+    builder.addCase(fetchWeatherData.rejected, (state, action) => {
       state.status = "failed";
     });
   },

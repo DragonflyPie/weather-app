@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Location } from "./types";
+import type { Location } from "../utilities/types";
 
 export const fetchGeoLocationByIp = createAsyncThunk(
   "location/locationByIp",
@@ -12,14 +12,10 @@ export const fetchGeoLocationByIp = createAsyncThunk(
   }
 );
 
-export interface locationState {
+interface locationState {
   status: "idle" | "loading" | "succeeded" | "failed";
-  value?: {
-    city: string;
-    regionName: string;
-    lat: string;
-    lon: string;
-  };
+  value?: Location;
+  error?: string;
 }
 
 const initialState: locationState = {
@@ -44,6 +40,7 @@ export const locationSlice = createSlice({
     });
     builder.addCase(fetchGeoLocationByIp.rejected, (state, action) => {
       state.status = "failed";
+      state.error = action.error.message;
     });
   },
 });

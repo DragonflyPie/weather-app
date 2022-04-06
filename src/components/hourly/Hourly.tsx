@@ -1,7 +1,5 @@
-import React, { useEffect } from "react";
-import { WeatherState } from "./weatherSlice";
-import { useAppSelector } from "./hooks";
-import { timeFromDate } from "./utils";
+import { WeatherState } from "../../redux/weatherSlice";
+import { timeFromDate } from "../../utilities/utils";
 
 type HourlyProps = {
   weatherData: WeatherState["value"];

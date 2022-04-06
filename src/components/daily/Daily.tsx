@@ -1,6 +1,6 @@
 import React from "react";
-import { useAppSelector } from "./hooks";
-import { dayFromDate } from "./utils";
+import { useAppSelector } from "../../utilities/hooks";
+import { dayFromDate } from "../../utilities/utils";
 
 const Daily = () => {
   const weatherData = useAppSelector((state) => state.weather.value);

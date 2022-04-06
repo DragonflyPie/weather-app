@@ -1,8 +1,12 @@
 import React from "react";
-import { useAppSelector } from "./hooks";
-import Hourly from "./Hourly";
+import { useAppSelector } from "../../utilities/hooks";
+import Hourly from "../hourly/Hourly";
 import { CgArrowLongDownC } from "react-icons/cg";
-import { convertPressure, dayFromDate, timeFromDate } from "./utils";
+import {
+  convertPressure,
+  dayFromDate,
+  timeFromDate,
+} from "../../utilities/utils";
 
 const Current = () => {
   const weatherData = useAppSelector((state) => state.weather.value);

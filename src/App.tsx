@@ -1,9 +1,9 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.scss";
-import Navbar from "./Navbar";
-import Daily from "./Daily";
-import Current from "./Current";
-import Suggestions from "./Suggestions";
+import Navbar from "./components/navbar/Navbar";
+import Daily from "./components/daily/Daily";
+import Current from "./components/current/Current";
+import Suggestions from "./components/suggestions/Suggestions";
 
 function App() {
   return (
