@@ -58,3 +58,8 @@ export const flattenGeoData = (e: LocationGeoTree): Location => {
   };
   return geoData;
 };
+
+export const tempToString = (temp: number): string => {
+  let t = temp.toFixed(0).replace("-0", "0");
+  return temp > 0 ? `+${t}` : t;
+};

@@ -30,7 +30,7 @@ const SearchBar = () => {
       dispatch(fetchLocationByQuery(query));
     }, 500);
     return () => clearTimeout(delayedSearch);
-  }, [query]);
+  }, [query, dispatch]);
 
   useEffect(() => {
     if (currentLocation) {

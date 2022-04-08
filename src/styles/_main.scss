@@ -78,9 +78,17 @@
   grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
 }
 
-.current {
+.today {
   margin-top: 7rem;
 }
 .daily {
   margin-top: 7rem;
+  display: flex;
+  gap: 1em;
+}
+
+.hourly {
+  padding: 0.2em;
+  display: flex;
+  gap: 1em;
 }

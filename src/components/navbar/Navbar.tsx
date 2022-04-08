@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import SearchBar from "../searchBar/SearchBar";
 import { Outlet } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../utilities/hooks";
