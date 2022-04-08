@@ -8,6 +8,7 @@ import {
   WeatherData,
   RawWeatherData,
   Current,
+  CurrentRaw,
 } from "../utilities/types";
 import { windDirectionToString } from "../utilities/utils";
 import { weatherApiKey as key } from "../apiKey";
@@ -27,7 +28,7 @@ export const fetchWeatherData = createAsyncThunk(
 
 const flattenHour = (hour: HourRaw, offset: number): Hour => {
   return {
-    dt: hour.dt + offset,
+    dt: hour.dt,
     temp: hour.temp,
     clouds: hour.clouds,
     wind_speed: hour.wind_speed,
@@ -43,7 +44,7 @@ const flattenHour = (hour: HourRaw, offset: number): Hour => {
 
 const flattenDay = (day: DayRaw, offset: number): Day => {
   return {
-    dt: day.dt + offset,
+    dt: day.dt,
     sunrise: day.sunrise + offset,
     sunset: day.sunset + offset,
     moonphase: day.moonphase,
@@ -63,27 +64,31 @@ const flattenDay = (day: DayRaw, offset: number): Day => {
   };
 };
 
+const flattenCurrent = (current: CurrentRaw, offset: number): Current => {
+  return {
+    dt: current.dt,
+    sunrise: current.sunrise + offset,
+    sunset: current.sunset + offset,
+    temp: current.temp,
+    pressure: current.pressure,
+    humidity: current.humidity,
+    clouds: current.clouds,
+    uvi: current.uvi,
+    visibility: current.visibility,
+    wind_speed: current.wind_speed,
+    wind_gust: current.wind_gust,
+    wind_deg: current.wind_deg,
+    wind_string: windDirectionToString(current.wind_deg),
+    rain: current.rain?.["1h"],
+    snow: current.snow?.["1h"],
+    weather: current.weather[0].description,
+  };
+};
+
 const flattenWeatherData = (data: RawWeatherData): WeatherData => {
   const weatherData: WeatherData = {
     offset: data.timezone_offset,
-    current: {
-      dt: data.current.dt + data.timezone_offset,
-      sunrise: data.current.sunrise + data.timezone_offset,
-      sunset: data.current.sunset + data.timezone_offset,
-      temp: data.current.temp,
-      pressure: data.current.pressure,
-      humidity: data.current.humidity,
-      clouds: data.current.clouds,
-      uvi: data.current.uvi,
-      visibility: data.current.visibility,
-      wind_speed: data.current.wind_speed,
-      wind_gust: data.current.wind_gust,
-      wind_deg: data.current.wind_deg,
-      wind_string: windDirectionToString(data.current.wind_deg),
-      rain: data.current.rain?.["1h"],
-      snow: data.current.snow?.["1h"],
-      weather: data.current.weather[0].description,
-    },
+    current: flattenCurrent(data.current, data.timezone_offset),
     hourly: data.hourly.map((hour) => flattenHour(hour, data.timezone_offset)),
     daily: data.daily.map((day) => flattenDay(day, data.timezone_offset)),
   };

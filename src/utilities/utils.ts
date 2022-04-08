@@ -1,26 +1,26 @@
 import type { LocationGeoTree, Location } from "./types";
+const dayjs = require("dayjs");
+require("dayjs/locale/ru");
+const localizedFormat = require("dayjs/plugin/localizedFormat");
+const utc = require("dayjs/plugin/utc");
+dayjs.extend(utc);
+dayjs.extend(localizedFormat);
 
 export const convertPressure = (pressureInHPa: number): string => {
   return (pressureInHPa * 0.750062).toFixed(0);
 };
 
-export const timeFromDate = (dt: number): string =>
-  new Date(dt * 1000).toLocaleString("ru", {
-    timeZone: "UTC",
-    hour12: false,
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+export const timeFromDate = (dt: number): string => {
+  return dayjs.unix(dt).utc().format("HH:mm");
+};
+
+export const userTimeFromDate = (dt: number): string => {
+  return dayjs.unix(dt).format("HH:mm");
+};
 
 export const dayFromDate = (dt: number): string => {
-  const stringifyDate: string = new Date(dt * 1000).toLocaleString("ru", {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-    timeZone: "UTC",
-  });
-
-  return stringifyDate[0].toUpperCase() + stringifyDate.slice(1);
+  const date = dayjs.unix(dt).locale("ru").format("dddd, D MMMM");
+  return date[0].toUpperCase() + date.slice(1);
 };
 
 export const windDirectionToString = (deg: number): string => {

@@ -1,6 +1,5 @@
-import { WeatherState } from "../../redux/weatherSlice";
 import { useAppSelector } from "../../utilities/hooks";
-import { tempToString, timeFromDate } from "../../utilities/utils";
+import { tempToString, userTimeFromDate } from "../../utilities/utils";
 
 const Hourly = () => {
   const hourlyWeather = useAppSelector((state) => state.weather.value?.hourly);
@@ -14,8 +13,8 @@ const Hourly = () => {
   return (
     <ul className="hourly">
       {slicedHours.map((hour) => (
-        <div key={timeFromDate(hour.dt)} className="">
-          <div className="">{timeFromDate(hour.dt)}</div>
+        <div key={userTimeFromDate(hour.dt)} className="">
+          <div className="">{userTimeFromDate(hour.dt)}</div>
           <div className="">{tempToString(hour.temp)}&#176;C</div>
           <div className="">{hour.wind_string}</div>
           <div className="">Осадки: {hour.pop * 100}%</div>

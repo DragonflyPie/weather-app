@@ -28,8 +28,8 @@ const Daily = () => {
           <div className="">Порывы: {day.wind_gust}м/с</div>
           <div className="">Ветер: {day.wind_speed}м/с</div>
           <div className="">Фаза луны: {day.moonphase}м/с</div>
-          <div className="">Восход: {timeFromDate(day.sunrise)}м/с</div>
-          <div className="">Закат: {timeFromDate(day.sunset)}м/с</div>
+          <div className="">Восход: {timeFromDate(day.sunrise)}</div>
+          <div className="">Закат: {timeFromDate(day.sunset)}</div>
 
           <div className="">
             Днём:

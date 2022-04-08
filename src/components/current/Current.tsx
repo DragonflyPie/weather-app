@@ -5,6 +5,7 @@ import {
   dayFromDate,
   tempToString,
   timeFromDate,
+  userTimeFromDate,
 } from "../../utilities/utils";
 
 const Current = () => {
@@ -19,7 +20,7 @@ const Current = () => {
         <div className="">{dayFromDate(weatherData.dt)}</div>
         <div className="">{weatherData.weather}</div>
         <div className="">Влажность: {weatherData.humidity}%</div>
-        <div className="">Время: {timeFromDate(weatherData.dt)}</div>
+        <div className="">Время: {userTimeFromDate(weatherData.dt)}</div>
         <div className="">
           Температура: {tempToString(weatherData.temp)}&#176;C
         </div>
