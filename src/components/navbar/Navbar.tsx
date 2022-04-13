@@ -18,14 +18,16 @@ const Navbar = () => {
   return (
     <>
       <div className="navbar">
-        <div className="navbar__flexbar">
-          <WiDayFog size={40} />
-          <div className="navbar__location">
-            {location}
-            {region && `, ${region}`}
+        <div className="navbar__row">
+          <WiDayFog size={45} />
+          <div className="navbar__column">
+            <div className="navbar__location">
+              {location}
+              {region && `, ${region}`}
+            </div>
+            <SearchBar />
           </div>
         </div>
-        <SearchBar />
         <div className="navbar__links-bar">
           <NavLink
             to="/"
@@ -34,6 +36,14 @@ const Navbar = () => {
             }
           >
             Сегодня
+          </NavLink>
+          <NavLink
+            to="tomorrow"
+            className={({ isActive }) =>
+              isActive ? "navbar__link navbar__link--active" : "navbar__link"
+            }
+          >
+            Завтра
           </NavLink>
           <NavLink
             to="daily"
@@ -45,7 +55,9 @@ const Navbar = () => {
           </NavLink>
         </div>
       </div>
-      <Outlet />
+      <div className="main">
+        <Outlet />
+      </div>
     </>
   );
 };

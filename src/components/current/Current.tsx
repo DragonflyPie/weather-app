@@ -10,6 +10,7 @@ import {
 
 const Current = () => {
   const weatherData = useAppSelector((state) => state.weather.value?.current);
+
   if (!weatherData) {
     return <div className="current">Nothing to show</div>;
   }
@@ -29,7 +30,6 @@ const Current = () => {
         </div>
         <div className="">Восход: {timeFromDate(weatherData.sunrise)}</div>
         <div className="">Закат: {timeFromDate(weatherData.sunset)}</div>
-        <div className="">Видимость: {weatherData.visibility}</div>
         <div className="">
           Направление ветра:
           {weatherData.wind_string}
@@ -37,10 +37,18 @@ const Current = () => {
             style={{ transform: `rotate(${weatherData.wind_deg}deg)` }}
           />
         </div>
-        <div className="">Скорость ветра: {weatherData.wind_speed}</div>
-        <div className="">Порывы ветра: {weatherData.wind_gust}</div>
-        {weatherData.rain && <div className="">Дождь: {weatherData.rain}</div>}
-        {weatherData.snow && <div className="">Снег: {weatherData.snow}</div>}
+        <div className="">
+          Скорость ветра: {weatherData.wind_speed.toFixed(1)} м/с
+        </div>
+        <div className="">
+          Порывы ветра: {weatherData.wind_gust?.toFixed(1)} м/с
+        </div>
+        {weatherData.rain && (
+          <div className="">Дождь: {weatherData.rain} мм</div>
+        )}
+        {weatherData.snow && (
+          <div className="">Снег: {weatherData.snow} мм</div>
+        )}
       </div>
     </div>
   );

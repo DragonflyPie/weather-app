@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../utilities/hooks";
 import { updateLocation } from "../../redux/locationSlice";
 import { flattenGeoData } from "../../utilities/utils";
 import type { LocationGeoTree } from "../../utilities/types";
+import { useEffect } from "react";
 
 type DropDownProps = {
   activeSuggestionIndex: number;
@@ -26,19 +27,24 @@ const DropDown = ({ activeSuggestionIndex, resetSearchUI }: DropDownProps) => {
   };
 
   if (suggestionsStatus === "loading") {
-    return <div className="spinner">Loading...</div>;
+    return <div className="dropdown__spinner">Loading...</div>;
   }
   if (error) {
-    return <div className="">{error}</div>;
+    return <div className="dropdown__error">{error}</div>;
   }
   if (suggestions?.length) {
-    let renderedSuggestions = suggestions
+    const renderedSuggestions = suggestions
       .slice(0, 5)
       .map((suggestion, index) => {
         let suggestionClass = classNames({
-          search__suggestion: true,
-          "search__suggestion--active": index === activeSuggestionIndex,
+          dropdown__suggestion: true,
+          "dropdown__suggestion--active": index === activeSuggestionIndex,
         });
+
+        const shortenedSuggestion =
+          suggestion.value[0][0] +
+          "." +
+          suggestion.value.split(" ").slice(1).join(" ");
 
         return (
           <li
@@ -46,11 +52,11 @@ const DropDown = ({ activeSuggestionIndex, resetSearchUI }: DropDownProps) => {
             className={suggestionClass}
             onClick={() => handleSuggestionClick(suggestions[index])}
           >
-            {suggestion.value}
+            {shortenedSuggestion}
           </li>
         );
       });
-    return <ul className="">{renderedSuggestions}</ul>;
+    return <ul className="dropdown__list">{renderedSuggestions}</ul>;
 
     //   )
     // suggestions.slice(0, 5).map((location, index) => {

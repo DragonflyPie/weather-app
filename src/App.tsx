@@ -4,6 +4,7 @@ import Navbar from "./components/navbar/Navbar";
 import Daily from "./components/daily/Daily";
 import Suggestions from "./components/suggestions/Suggestions";
 import Today from "./components/today/Today";
+import Tomorrow from "./components/Tomorrow/Tomorrow";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/" element={<Navbar />}>
           <Route index element={<Today />} />
           <Route path="daily" element={<Daily />} />
+          <Route path="tomorrow" element={<Tomorrow />} />
           <Route path="suggestions" element={<Suggestions />} />
         </Route>
       </Routes>

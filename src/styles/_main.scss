@@ -27,14 +27,21 @@
   // background-color: base.$light;
 
   &__location {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
   }
 
-  &__flexbar {
+  &__row {
     display: flex;
-    flex-direction: row;
-    align-items: center;
     gap: 1em;
+    align-items: center;
+    & > svg {
+      height: 100%;
+    }
+  }
+  &__column {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25em;
   }
 
   &__links-bar {
@@ -62,33 +69,93 @@
 }
 
 .search {
-  &__dropdown {
-    position: fixed;
-    background-color: antiquewhite;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.15em;
+  width: 20rem;
+
+  &__input {
+    padding: 0.2em 3em 0.2em 0.5em;
+    width: 100%;
+    border: 0.05rem solid black;
+    border-radius: 0.2rem;
   }
-  &__suggestion--active {
-    background-color: aqua;
+
+  &__button {
+    border-radius: 0.2rem;
+    border: 0.05rem solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    & > svg {
+      width: 1.7rem;
+      height: 1.7rem;
+    }
   }
 }
 
+.dropdown {
+  position: fixed;
+  top: 4rem;
+  background-color: base.$white;
+  border-bottom-right-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+  padding: 0.5em 0;
+  line-height: 1.5rem;
+
+  &__list {
+    list-style: none;
+  }
+
+  &__suggestion {
+    padding: 0 0.5em;
+  }
+
+  &__suggestion--active {
+    background-color: base.$light;
+  }
+}
 .suggestions-list {
-  margin-top: 7rem;
   display: grid;
   width: 100%;
   grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
 }
 
-.today {
+.main {
   margin-top: 7rem;
+  max-width: 45rem;
 }
+
 .daily {
-  margin-top: 7rem;
   display: flex;
   gap: 1em;
 }
 
 .hourly {
-  padding: 0.2em;
   display: flex;
   gap: 1em;
+
+  &__carousel {
+    width: 100%;
+    background-color: bisque;
+    padding: 0.3em;
+  }
+}
+
+.hour {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
+  margin-right: 0.3em;
+
+  &__time {
+    font-weight: bold;
+    align-self: center;
+  }
 }

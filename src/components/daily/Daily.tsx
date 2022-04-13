@@ -5,6 +5,11 @@ import { CgArrowLongDownC } from "react-icons/cg";
 
 const Daily = () => {
   const weatherData = useAppSelector((state) => state.weather.value?.daily);
+  const status = useAppSelector((state) => state.weather.status);
+
+  if (status === "loading") {
+    return <div className="spinner">Loading...</div>;
+  }
   if (!weatherData) {
     return <div className="">Something went wrong</div>;
   }
@@ -25,8 +30,8 @@ const Daily = () => {
               }}
             />
           </div>
-          <div className="">Порывы: {day.wind_gust}м/с</div>
-          <div className="">Ветер: {day.wind_speed}м/с</div>
+          <div className="">Порывы: {day.wind_gust.toFixed(1)} м/с</div>
+          <div className="">Ветер: {day.wind_speed.toFixed(1)} м/с</div>
           <div className="">Фаза луны: {day.moonphase}м/с</div>
           <div className="">Восход: {timeFromDate(day.sunrise)}</div>
           <div className="">Закат: {timeFromDate(day.sunset)}</div>

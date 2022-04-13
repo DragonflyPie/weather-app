@@ -7,23 +7,36 @@ import { flattenGeoData } from "../../utilities/utils";
 import DropDown from "../dropdown/DropDown";
 import { fetchLocationByQuery } from "../../redux/suggestionsSlice";
 import type { LocationGeoTree } from "../../utilities/types";
+import { IoSearchCircleOutline } from "react-icons/io5";
 
 const SearchBar = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const dropDownRef = useRef<HTMLDivElement>(null);
 
   const suggestions = useAppSelector((state) => state.suggestions.value);
 
   const [query, setQuery] = useState("");
   const [activeSuggestionIndex, setActiveSuggestionIndex] = useState(-1);
-  const [showDropdown, setShowDropdown] = useState(false);
+  const [showDropDown, setShowDropDown] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const currentLocation = useAppSelector((state) => state.location.value);
 
   useEffect(() => {
+    const handleMouseClick = (e: MouseEvent) => {
+      if (!dropDownRef.current?.contains(e.target as Node))
+        setShowDropDown(false);
+    };
+    window.addEventListener("mousedown", handleMouseClick);
+    return () => {
+      window.removeEventListener("mousedown", handleMouseClick);
+    };
+  });
+
+  useEffect(() => {
     if (query.length < 2) {
-      setShowDropdown(false);
+      setShowDropDown(false);
       return;
     }
     const delayedSearch = setTimeout(() => {
@@ -40,7 +53,7 @@ const SearchBar = () => {
 
   const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setQuery(e.target.value);
-    setShowDropdown(true);
+    setShowDropDown(true);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>): void => {
@@ -57,23 +70,24 @@ const SearchBar = () => {
             : setActiveSuggestionIndex(activeSuggestionIndex - 1);
           break;
         case "Enter":
-          if (inputRef.current !== null) {
-            inputRef.current.blur();
-          }
-          activeSuggestionIndex === -1 || !showDropdown
+          // if (inputRef.current !== null) {
+          //   inputRef.current.blur();
+          // }
+          e.currentTarget.blur();
+          activeSuggestionIndex === -1 || !showDropDown
             ? showSuggestions()
             : changeLocation(suggestions[activeSuggestionIndex]);
           break;
         case "Escape":
-          setShowDropdown(false);
+          setShowDropDown(false);
           break;
       }
     }
   };
 
   const resetSearchUI = (): void => {
-    setQuery("");
-    setShowDropdown(false);
+    // setQuery("");
+    setShowDropDown(false);
     setActiveSuggestionIndex(-1);
   };
 
@@ -85,31 +99,35 @@ const SearchBar = () => {
   };
 
   const showSuggestions = (): void => {
-    resetSearchUI();
     navigate("suggestions");
+    resetSearchUI();
   };
 
   return (
-    <div className="search navbar__search">
-      <input
-        type="text"
-        ref={inputRef}
-        className="search__input"
-        value={query}
-        onChange={handleQueryChange}
-        onKeyDown={handleKeyPress}
-        placeholder="Населенный пункт..."
-      />
-      <div className="search__icon"></div>
-      {showDropdown && (
-        <div className="search__dropdown">
+    <>
+      <div className="search navbar__search">
+        <input
+          type="text"
+          ref={inputRef}
+          className="search__input"
+          value={query}
+          onChange={handleQueryChange}
+          onKeyDown={handleKeyPress}
+          placeholder="Населенный пункт..."
+        />
+        <button className="search__button" onClick={showSuggestions}>
+          <IoSearchCircleOutline />
+        </button>
+      </div>
+      {showDropDown && (
+        <div ref={dropDownRef} className="search__dropdown dropdown">
           <DropDown
             activeSuggestionIndex={activeSuggestionIndex}
             resetSearchUI={resetSearchUI}
           />
         </div>
       )}
-    </div>
+    </>
   );
 };
 
