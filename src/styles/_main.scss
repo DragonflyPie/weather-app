@@ -128,34 +128,77 @@
 }
 
 .main {
+  display: flex;
+  flex-direction: column;
   margin-top: 7rem;
-  max-width: 45rem;
+  width: base.$full-width;
+  align-items: center;
+  border: 1px solid black;
 }
 
+.today {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.current {
+  width: 100%;
+}
 .daily {
   display: flex;
   gap: 1em;
 }
 
 .hourly {
-  display: flex;
-  gap: 1em;
-
-  &__carousel {
-    width: 100%;
-    background-color: bisque;
-    padding: 0.3em;
-  }
+  max-width: calc(base.$full-width - 3rem);
 }
 
 .hour {
   display: flex;
   flex-direction: column;
   gap: 0.2em;
-  margin-right: 0.3em;
+  height: 100%;
+
+  background-color: base.$light;
 
   &__time {
     font-weight: bold;
-    align-self: center;
+    text-align: center;
   }
+}
+
+.slick-slider {
+  align-self: center;
+}
+
+.slick-slide {
+  padding: 0.25em;
+  height: auto;
+
+  & > div {
+    height: 100%;
+  }
+}
+
+.slick-prev {
+  left: -1.25rem;
+}
+
+.slick-next {
+  right: -1.25rem;
+}
+
+.slick-track {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  gap: 0.1em;
+}
+
+.slick-arrow,
+::after,
+::before {
+  color: base.$light !important;
 }

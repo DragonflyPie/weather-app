@@ -70,9 +70,6 @@ const SearchBar = () => {
             : setActiveSuggestionIndex(activeSuggestionIndex - 1);
           break;
         case "Enter":
-          // if (inputRef.current !== null) {
-          //   inputRef.current.blur();
-          // }
           e.currentTarget.blur();
           activeSuggestionIndex === -1 || !showDropDown
             ? showSuggestions()
@@ -86,7 +83,7 @@ const SearchBar = () => {
   };
 
   const resetSearchUI = (): void => {
-    // setQuery("");
+    setQuery("");
     setShowDropDown(false);
     setActiveSuggestionIndex(-1);
   };
@@ -98,9 +95,9 @@ const SearchBar = () => {
     navigate("/");
   };
 
-  const showSuggestions = (): void => {
-    navigate("suggestions");
-    resetSearchUI();
+  const showSuggestions = async (): Promise<void> => {
+    await navigate("suggestions");
+    await resetSearchUI();
   };
 
   return (
