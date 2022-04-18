@@ -3,14 +3,19 @@ import { useAppDispatch, useAppSelector } from "../../utilities/hooks";
 import { updateLocation } from "../../redux/locationSlice";
 import { flattenGeoData } from "../../utilities/utils";
 import type { LocationGeoTree } from "../../utilities/types";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 
 type DropDownProps = {
   activeSuggestionIndex: number;
   resetSearchUI: () => void;
+  handleMouseOver: (e: number) => void;
 };
 
-const DropDown = ({ activeSuggestionIndex, resetSearchUI }: DropDownProps) => {
+const DropDown = ({
+  activeSuggestionIndex,
+  resetSearchUI,
+  handleMouseOver,
+}: DropDownProps) => {
   const classNames = require("classnames");
   const suggestionsStatus = useAppSelector((state) => state.suggestions.status);
   const error = useAppSelector((state) => state.suggestions.error);
@@ -51,6 +56,7 @@ const DropDown = ({ activeSuggestionIndex, resetSearchUI }: DropDownProps) => {
             key={suggestion.value}
             className={suggestionClass}
             onClick={() => handleSuggestionClick(suggestions[index])}
+            onMouseOver={() => handleMouseOver(index)}
           >
             {shortenedSuggestion}
           </li>

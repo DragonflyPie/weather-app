@@ -113,6 +113,10 @@
 
   &__suggestion {
     padding: 0 0.5em;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   &__suggestion--active {

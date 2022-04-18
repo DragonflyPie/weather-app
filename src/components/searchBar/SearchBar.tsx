@@ -82,6 +82,10 @@ const SearchBar = () => {
     }
   };
 
+  const handleMouseOver = (e: number): void => {
+    setActiveSuggestionIndex(e);
+  };
+
   const resetSearchUI = (): void => {
     setQuery("");
     setShowDropDown(false);
@@ -121,6 +125,7 @@ const SearchBar = () => {
           <DropDown
             activeSuggestionIndex={activeSuggestionIndex}
             resetSearchUI={resetSearchUI}
+            handleMouseOver={handleMouseOver}
           />
         </div>
       )}
