@@ -1,4 +1,9 @@
-import type { LocationGeoTree, Location } from "./types";
+import type {
+  LocationGeoTree,
+  Location,
+  WeatherTimesOfDayDescription,
+  TimesOfDay,
+} from "./types";
 const dayjs = require("dayjs");
 require("dayjs/locale/ru");
 const localizedFormat = require("dayjs/plugin/localizedFormat");
@@ -50,7 +55,7 @@ export const windDirectionToString = (deg: number): string => {
 };
 
 export const flattenGeoData = (e: LocationGeoTree): Location => {
-  let geoData: Location = {
+  const geoData: Location = {
     city: e.value.split(",")[0].split(" ")[1],
     regionName: e.value.split(",")[1],
     lat: e.geo_center.lat,
@@ -60,6 +65,44 @@ export const flattenGeoData = (e: LocationGeoTree): Location => {
 };
 
 export const tempToString = (temp: number): string => {
-  let t = temp.toFixed(0).replace("-0", "0");
+  const t = temp.toFixed(0).replace("-0", "0");
   return temp > 0 ? `+${t}` : t;
+};
+
+export const getTimeOfDay = (data: TimesOfDay) => {
+  if (
+    dayjs.unix(data.time).hour() >= dayjs.unix(data.sunrise).hour() &&
+    dayjs.unix(data.time).hour() < dayjs.unix(data.sunset).hour()
+  ) {
+    return "day";
+  }
+  return "night";
+};
+
+export const getIconName = ({
+  id,
+  time = "day",
+}: WeatherTimesOfDayDescription): string => {
+  if (id === 800) {
+    return `clear-${time}`;
+  }
+  if (id === 801 || id === 802 || id === 803) {
+    return `clouds-few-${time}`;
+  }
+  if (id === 804) {
+    return `clouds-${time}`;
+  }
+  if ((id >= 300 && id <= 321) || (id >= 500 && id <= 531)) {
+    return `rain-${time}`;
+  }
+  if (id >= 600 && id <= 622) {
+    return `snow-${time}`;
+  }
+  if (id >= 200 && id <= 232) {
+    return `thunder-${time}`;
+  }
+  if ((id >= 701 && id <= 721) || id === 741) {
+    return `mist-${time}`;
+  }
+  return "other";
 };

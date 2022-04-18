@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
 import {
   Hour,
   HourRaw,
@@ -10,7 +10,11 @@ import {
   Current,
   CurrentRaw,
 } from "../utilities/types";
-import { windDirectionToString } from "../utilities/utils";
+import {
+  getIconName,
+  getTimeOfDay,
+  windDirectionToString,
+} from "../utilities/utils";
 import { weatherApiKey as key } from "../apiKey";
 
 // const key = process.env.REACT_APP_OPENWEATHER_API_KEY;
@@ -26,7 +30,7 @@ export const fetchWeatherData = createAsyncThunk(
   }
 );
 
-const flattenHour = (hour: HourRaw, offset: number): Hour => {
+const flattenHour = (hour: HourRaw, current: CurrentRaw): Hour => {
   return {
     dt: hour.dt,
     temp: hour.temp,
@@ -38,7 +42,17 @@ const flattenHour = (hour: HourRaw, offset: number): Hour => {
     wind_string: windDirectionToString(hour.wind_deg),
     rain: hour.rain?.["1h"],
     snow: hour.snow?.["1h"],
-    weather: hour.weather[0].description,
+    weather:
+      hour.weather[0].description[0].toUpperCase() +
+      hour.weather[0].description.slice(1),
+    icon: getIconName({
+      id: hour.weather[0].id,
+      time: getTimeOfDay({
+        time: hour.dt,
+        sunrise: current.sunrise,
+        sunset: current.sunset,
+      }),
+    }),
   };
 };
 
@@ -60,7 +74,10 @@ const flattenDay = (day: DayRaw, offset: number): Day => {
     wind_string: windDirectionToString(day.wind_deg),
     rain: day.rain?.["1h"],
     snow: day.snow?.["1h"],
-    weather: day.weather[0].description,
+    weather:
+      day.weather[0].description[0].toUpperCase() +
+      day.weather[0].description.slice(1),
+    icon: getIconName({ id: day.weather[0].id }),
   };
 };
 
@@ -81,7 +98,10 @@ const flattenCurrent = (current: CurrentRaw, offset: number): Current => {
     wind_string: windDirectionToString(current.wind_deg),
     rain: current.rain?.["1h"],
     snow: current.snow?.["1h"],
-    weather: current.weather[0].description,
+    weather:
+      current.weather[0].description[0].toUpperCase() +
+      current.weather[0].description.slice(1),
+    icon: getIconName({ id: current.weather[0].id }),
   };
 };
 
@@ -89,7 +109,7 @@ const flattenWeatherData = (data: RawWeatherData): WeatherData => {
   const weatherData: WeatherData = {
     offset: data.timezone_offset,
     current: flattenCurrent(data.current, data.timezone_offset),
-    hourly: data.hourly.map((hour) => flattenHour(hour, data.timezone_offset)),
+    hourly: data.hourly.map((hour) => flattenHour(hour, data.current)),
     daily: data.daily.map((day) => flattenDay(day, data.timezone_offset)),
   };
   return weatherData;

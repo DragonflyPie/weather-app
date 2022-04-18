@@ -1,6 +1,7 @@
 import { useAppSelector } from "../../utilities/hooks";
 import { tempToString, userTimeFromDate } from "../../utilities/utils";
 import Slider from "react-slick";
+import WeatherIcon from "../common/WeatherIcon";
 
 const Hourly = () => {
   const hourlyWeather = useAppSelector((state) => state.weather.value?.hourly);
@@ -9,7 +10,7 @@ const Hourly = () => {
     return <div className="">No data</div>;
   }
 
-  const slicedHours = hourlyWeather.slice(0, 13);
+  const slicedHours = hourlyWeather.slice(0, 25);
 
   const settings = {
     dots: false,
@@ -24,11 +25,20 @@ const Hourly = () => {
         {slicedHours.map((hour) => (
           <div key={userTimeFromDate(hour.dt)} className="hour">
             <div className="hour__time">{userTimeFromDate(hour.dt)}</div>
-            <div className="hour__temp">{tempToString(hour.temp)}&#176;C</div>
-            <div className="hour__icon">{hour.weather}</div>
-            <div className="hour__wind">{hour.wind_string}</div>
-            <div className="hour__precipitation">
-              Осадки: {(hour.pop * 100).toFixed(0)}%
+            <hr className="hour__line"></hr>
+            <div className="hour__bar">
+              <div className="hour__icon">
+                <WeatherIcon iconName={hour.icon} />
+              </div>
+              <div className="hour__temp">{tempToString(hour.temp)}&#176;</div>
+            </div>
+            <div className="hour__column">
+              <div className="hour__description">{hour.weather}</div>
+              {hour.pop !== 0 && (
+                <div className="hour__precipitation">
+                  Осадки: {(hour.pop * 100).toFixed(0)}%
+                </div>
+              )}
             </div>
           </div>
         ))}

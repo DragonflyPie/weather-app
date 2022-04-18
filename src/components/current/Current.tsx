@@ -23,7 +23,7 @@ const Current = () => {
         <div className="">Влажность: {weatherData.humidity}%</div>
         <div className="">Время: {userTimeFromDate(weatherData.dt)}</div>
         <div className="">
-          Температура: {tempToString(weatherData.temp)}&#176;C
+          Температура: {tempToString(weatherData.temp)}&#176;
         </div>
         <div className="">
           Давление: {convertPressure(weatherData.pressure)} мм рт. ст.

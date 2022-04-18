@@ -3,7 +3,7 @@ import Navbar from "./components/navbar/Navbar";
 import Daily from "./components/daily/Daily";
 import Suggestions from "./components/suggestions/Suggestions";
 import Today from "./components/today/Today";
-import Tomorrow from "./components/Tomorrow/Tomorrow";
+import Tomorrow from "./components/tomorrow/Tomorrow";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./App.scss";

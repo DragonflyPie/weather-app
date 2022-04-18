@@ -8,6 +8,7 @@ export interface Location {
 export interface WeatherDescription {
   main: string;
   description: string;
+  id: number;
 }
 
 export interface Hour {
@@ -22,6 +23,7 @@ export interface Hour {
   rain?: number;
   snow?: number;
   weather: string;
+  icon: string;
 }
 
 export interface HourRaw {
@@ -59,6 +61,7 @@ export interface Day {
   rain?: number;
   snow?: number;
   weather: string;
+  icon: string;
 }
 
 export interface DayRaw {
@@ -103,6 +106,7 @@ export interface Current {
   rain?: number;
   snow?: number;
   weather: string;
+  icon: string;
 }
 
 export interface CurrentRaw {
@@ -147,4 +151,15 @@ export interface LocationGeoTree {
     lat: string;
     lon: string;
   };
+}
+
+export interface WeatherTimesOfDayDescription {
+  id: number;
+  time?: "day" | "night";
+}
+
+export interface TimesOfDay {
+  time: number;
+  sunrise: number;
+  sunset: number;
 }
