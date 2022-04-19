@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "../../utilities/hooks";
 import { fetchGeoLocationByIp } from "../../redux/locationSlice";
 import { NavLink } from "react-router-dom";
 import { WiDayFog } from "react-icons/wi";
+import Footer from "../footer/Footer";
 
 const Navbar = () => {
   const dispatch = useAppDispatch();
@@ -58,6 +59,7 @@ const Navbar = () => {
       <div className="main">
         <Outlet />
       </div>
+      <Footer />
     </>
   );
 };

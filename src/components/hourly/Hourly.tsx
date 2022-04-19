@@ -26,17 +26,19 @@ const Hourly = () => {
           <div key={userTimeFromDate(hour.dt)} className="hour">
             <div className="hour__time">{userTimeFromDate(hour.dt)}</div>
             <hr className="hour__line"></hr>
-            <div className="hour__bar">
-              <div className="hour__icon">
-                <WeatherIcon iconName={hour.icon} />
-              </div>
-              <div className="hour__temp">{tempToString(hour.temp)}&#176;</div>
-            </div>
             <div className="hour__column">
-              <div className="hour__description">{hour.weather}</div>
+              <div className="hour__bar">
+                <div className="hour__icon">
+                  <WeatherIcon iconName={hour.icon} />
+                </div>
+                <div className="hour__temp">
+                  {tempToString(hour.temp)}&#176;
+                </div>
+              </div>
               {hour.pop !== 0 && (
-                <div className="hour__precipitation">
-                  Осадки: {(hour.pop * 100).toFixed(0)}%
+                <div className="hour__pop">
+                  {hour.snow ? "Снег:" : "Дождь"}: {(hour.pop * 100).toFixed(0)}
+                  %
                 </div>
               )}
             </div>

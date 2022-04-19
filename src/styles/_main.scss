@@ -10,9 +10,12 @@
 
 .app {
   width: 100%;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-family: base.$font-main;
+  font-weight: 300;
 }
 
 .navbar {
@@ -132,10 +135,24 @@
 .main {
   display: flex;
   flex-direction: column;
-  margin-top: 7rem;
+  margin-top: 8em;
   width: base.$full-width;
   align-items: center;
   background-color: antiquewhite;
+  min-height: calc(100vh - 11rem);
+  border-radius: 0.5rem;
+  text-align: center;
+}
+
+.footer {
+  height: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & svg {
+    vertical-align: middle;
+  }
 }
 
 .today {
@@ -147,8 +164,58 @@
   gap: 1em;
 }
 
-.current {
+.weather {
   width: 100%;
+
+  &__dt {
+    font-size: 1.5rem;
+  }
+
+  &__bar {
+    display: flex;
+    align-items: center;
+    // justify-content: space-around;
+    justify-content: space-between;
+    padding: 0.25em 2em;
+  }
+
+  &__main {
+    display: flex;
+    align-items: center;
+    gap: 3em;
+    padding: 1.5em 0;
+    justify-content: center;
+    font-weight: bold;
+  }
+
+  &__column {
+    display: flex;
+    gap: 0.2em;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__wind-speed,
+  &__sunrise,
+  &__sunset {
+    display: flex;
+    gap: 0.5em;
+    align-items: center;
+  }
+
+  &__temp {
+    font-size: 3rem;
+    font-weight: 100;
+    font-family: base.$font-main;
+  }
+  & svg {
+    vertical-align: middle;
+    font-size: 2rem;
+    color: black;
+    opacity: 0.6;
+    // stroke: black;
+    // stroke-width: 0.005em;
+  }
 }
 .daily {
   display: flex;
@@ -157,6 +224,9 @@
 
 .hourly {
   max-width: calc(base.$full-width - 3rem);
+  align-items: center;
+  justify-content: center;
+  display: flex;
 }
 
 .hour {
@@ -171,13 +241,13 @@
   justify-content: flex-start;
 
   &__time {
-    font-weight: bold;
     padding-top: 0.25em;
   }
 
   &__icon > svg {
     height: 2em;
     width: 2em;
+    vertical-align: middle;
   }
 
   &__line {
@@ -190,6 +260,7 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+    gap: 0.25em;
     justify-content: center;
   }
 
@@ -197,17 +268,21 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-    padding: 0 0.5em;
+    padding: 0 1em;
   }
 
   &__temp {
     font-weight: bold;
   }
+
+  &__pop {
+    font-size: 0.8rem;
+  }
 }
 
 .slick-slider {
   align-self: center;
-  width: calc(100% - 0.15rem);
+  width: calc(100% - 2rem);
 }
 
 .slick-slide {
@@ -220,11 +295,11 @@
 }
 
 .slick-prev {
-  left: -1.25rem;
+  left: -1.9rem;
 }
 
 .slick-next {
-  right: -1.25rem;
+  right: -1.3rem;
 }
 
 .slick-track {
@@ -234,8 +309,7 @@
   gap: 0.1em;
 }
 
-.slick-arrow,
-::after,
-::before {
+.slick-arrow::before {
   color: base.$light !important;
+  font-size: 2rem;
 }

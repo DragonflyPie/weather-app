@@ -1,5 +1,4 @@
 import { useAppSelector } from "../../utilities/hooks";
-import { CgArrowLongDownC } from "react-icons/cg";
 import {
   convertPressure,
   dayFromDate,
@@ -7,6 +6,15 @@ import {
   timeFromDate,
   userTimeFromDate,
 } from "../../utilities/utils";
+import WeatherIcon from "../common/WeatherIcon";
+import {
+  WiBarometer,
+  WiHumidity,
+  WiStrongWind,
+  WiWindDeg,
+} from "react-icons/wi";
+import { BsSunrise, BsSunset } from "react-icons/bs";
+import { RiWindyLine } from "react-icons/ri";
 
 const Current = () => {
   const weatherData = useAppSelector((state) => state.weather.value?.current);
@@ -16,39 +24,53 @@ const Current = () => {
   }
 
   return (
-    <div className="current">
-      <div className="today-grid">
-        <div className="">{dayFromDate(weatherData.dt)}</div>
-        <div className="">{weatherData.weather}</div>
-        <div className="">Влажность: {weatherData.humidity}%</div>
-        <div className="">Время: {userTimeFromDate(weatherData.dt)}</div>
-        <div className="">
-          Температура: {tempToString(weatherData.temp)}&#176;
+    <div className="current weather">
+      <div className="weather__dt">
+        {dayFromDate(weatherData.dt)} - {userTimeFromDate(weatherData.dt)}
+      </div>
+      <div className="weather__main">
+        <div className="weather__temp">
+          {tempToString(weatherData.temp)}&#176;
         </div>
-        <div className="">
-          Давление: {convertPressure(weatherData.pressure)} мм рт. ст.
+        <div className="weather__column">
+          <WeatherIcon iconName={weatherData.icon} />
+          <div className="weather__description">{weatherData.weather}</div>
         </div>
-        <div className="">Восход: {timeFromDate(weatherData.sunrise)}</div>
-        <div className="">Закат: {timeFromDate(weatherData.sunset)}</div>
-        <div className="">
-          Направление ветра:
-          {weatherData.wind_string}
-          <CgArrowLongDownC
+      </div>
+      <div className="weather__bar">
+        <div className="weather__humidity">
+          <WiHumidity /> {weatherData.humidity}%
+        </div>
+        <div className="weather__pressure">
+          <WiBarometer /> {convertPressure(weatherData.pressure)} мм рт. ст.
+        </div>
+      </div>
+      <div className="weather__bar">
+        <div className="weather__wind-speed">
+          <RiWindyLine />
+          <div className="weather__column">
+            <div className="">
+              Скорость - {weatherData.wind_speed.toFixed(1)} м/с
+            </div>
+            <div className="">
+              Порывы - {weatherData.wind_gust?.toFixed(1)} м/с
+            </div>
+          </div>
+        </div>
+        <div className="weather__column">
+          <WiWindDeg
             style={{ transform: `rotate(${weatherData.wind_deg}deg)` }}
           />
+          {weatherData.wind_string}
         </div>
-        <div className="">
-          Скорость ветра: {weatherData.wind_speed.toFixed(1)} м/с
+      </div>
+      <div className="weather__bar">
+        <div className="weather__sunrise">
+          <BsSunrise /> {timeFromDate(weatherData.sunrise)}
         </div>
-        <div className="">
-          Порывы ветра: {weatherData.wind_gust?.toFixed(1)} м/с
+        <div className="weather__sunset">
+          <BsSunset /> {timeFromDate(weatherData.sunset)}
         </div>
-        {weatherData.rain && (
-          <div className="">Дождь: {weatherData.rain} мм</div>
-        )}
-        {weatherData.snow && (
-          <div className="">Снег: {weatherData.snow} мм</div>
-        )}
       </div>
     </div>
   );
