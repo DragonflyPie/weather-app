@@ -47,10 +47,13 @@ export interface Day {
   dt: number;
   sunrise: number;
   sunset: number;
+  moonrise: number;
+  moonset: number;
   moonphase: number;
-  min_temp: number;
-  max_temp: number;
-  night_temp: number;
+  temp_morn: number;
+  temp_day: number;
+  temp_eve: number;
+  temp_night: number;
   clouds: number;
   humidity: number;
   wind_speed: number;
@@ -62,16 +65,20 @@ export interface Day {
   snow?: number;
   weather: string;
   icon: string;
+  pressure: number;
 }
 
 export interface DayRaw {
   dt: number;
   sunrise: number;
   sunset: number;
-  moonphase: number;
+  moon_phase: number;
+  moonrise: number;
+  moonset: number;
   temp: {
-    min: number;
-    max: number;
+    morn: number;
+    day: number;
+    eve: number;
     night: number;
   };
   clouds: number;
@@ -80,6 +87,7 @@ export interface DayRaw {
   wind_gust: number;
   wind_deg: number;
   pop: number;
+  pressure: number;
   rain?: {
     "1h": number;
   };

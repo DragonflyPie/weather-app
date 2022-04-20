@@ -1,7 +1,22 @@
 import React from "react";
 import { useAppSelector } from "../../utilities/hooks";
-import { dayFromDate, tempToString, timeFromDate } from "../../utilities/utils";
-import { CgArrowLongDownC } from "react-icons/cg";
+import {
+  convertPressure,
+  dayFromDate,
+  tempToString,
+  timeFromDate,
+} from "../../utilities/utils";
+import WeatherIcon from "../common/WeatherIcon";
+import {
+  WiBarometer,
+  WiHumidity,
+  WiMoonrise,
+  WiMoonset,
+  WiWindDeg,
+} from "react-icons/wi";
+import { RiWindyLine } from "react-icons/ri";
+import { BsSunrise, BsSunset } from "react-icons/bs";
+import MoonPhase from "../common/MoonPhase";
 
 const Daily = () => {
   const weatherData = useAppSelector((state) => state.weather.value?.daily);
@@ -17,34 +32,39 @@ const Daily = () => {
   return (
     <div className="daily">
       {weatherData.map((day) => (
-        <div className="" key={dayFromDate(day.dt)}>
-          <div className="">{dayFromDate(day.dt)}</div>
-          <div className="">Clouds:{day.clouds}%</div>
-          <div className="">Osadki: {day.pop}</div>
-          <div className="">Влажность: {day.humidity}%</div>
-          <div className="">
-            Napravlenie: {day.wind_string}
-            <CgArrowLongDownC
-              style={{
-                transform: `rotate(${day.wind_deg}deg)`,
-              }}
-            />
-          </div>
-          <div className="">Порывы: {day.wind_gust.toFixed(1)} м/с</div>
-          <div className="">Ветер: {day.wind_speed.toFixed(1)} м/с</div>
-          <div className="">Фаза луны: {day.moonphase}м/с</div>
-          <div className="">Восход: {timeFromDate(day.sunrise)}</div>
-          <div className="">Закат: {timeFromDate(day.sunset)}</div>
+        <div key={day.dt} className="day">
+          <div className="day__dt">{dayFromDate(day.dt)}</div>
+          <div className="day__main">
+            <div className="day__column right">
+              <div>
+                Утро:{" "}
+                <span className="bold">{tempToString(day.temp_day)}&#176;</span>
+              </div>
+              <div>
+                День:{" "}
+                <span className="bold">{tempToString(day.temp_day)}&#176;</span>
+              </div>
+              <div>
+                Вечер:{" "}
+                <span className="bold">{tempToString(day.temp_day)}&#176;</span>
+              </div>
 
-          <div className="">
-            Днём:
-            {tempToString(day.min_temp)}...
-            {tempToString(day.max_temp)}&#176;C
+              <div>
+                Ночь:{" "}
+                <span className="bold">
+                  {tempToString(day.temp_night)}&#176;
+                </span>
+              </div>
+            </div>
+            <div className="day__column">
+              <WeatherIcon iconName={day.icon} />
+              <div>{day.weather}</div>
+            </div>
+            <div className="day__column">
+              <WiWindDeg style={{ transform: `rotate(${day.wind_deg}deg)` }} />
+              <div>{day.wind_speed.toFixed(0)} м/с</div>
+            </div>
           </div>
-          <div className="">Ночью: {tempToString(day.night_temp)}&#176;C</div>
-          <div className="">Description: {day.weather}</div>
-          {day.rain && <div className="">Rain: {day.rain} mm</div>}
-          {day.snow && <div className="">Снег: {day.snow} mm</div>}
         </div>
       ))}
     </div>

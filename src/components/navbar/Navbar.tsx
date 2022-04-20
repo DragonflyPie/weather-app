@@ -56,8 +56,10 @@ const Navbar = () => {
           </NavLink>
         </div>
       </div>
-      <div className="main">
-        <Outlet />
+      <div className="content-container">
+        <div className="main">
+          <Outlet />
+        </div>
       </div>
       <Footer />
     </>

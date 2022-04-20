@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   Hour,
   HourRaw,
@@ -61,16 +61,21 @@ const flattenDay = (day: DayRaw, offset: number): Day => {
     dt: day.dt,
     sunrise: day.sunrise + offset,
     sunset: day.sunset + offset,
-    moonphase: day.moonphase,
+    moonphase: day.moon_phase * 100,
+    moonrise: day.moonrise + offset,
+    moonset: day.moonset + offset,
     humidity: day.humidity,
     clouds: day.clouds,
-    min_temp: day.temp.min,
-    max_temp: day.temp.max,
-    night_temp: day.temp.night,
+    temp_morn: day.temp.morn,
+    temp_day: day.temp.day,
+    temp_eve: day.temp.eve,
+    temp_night: day.temp.night,
     wind_speed: day.wind_speed,
     wind_gust: day.wind_gust,
     pop: day.pop,
+    pressure: day.pressure,
     wind_deg: day.wind_deg,
+
     wind_string: windDirectionToString(day.wind_deg),
     rain: day.rain?.["1h"],
     snow: day.snow?.["1h"],

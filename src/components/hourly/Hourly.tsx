@@ -28,11 +28,11 @@ const Hourly = () => {
             <hr className="hour__line"></hr>
             <div className="hour__column">
               <div className="hour__bar">
-                <div className="hour__icon">
-                  <WeatherIcon iconName={hour.icon} />
-                </div>
                 <div className="hour__temp">
                   {tempToString(hour.temp)}&#176;
+                </div>
+                <div className="hour__icon">
+                  <WeatherIcon iconName={hour.icon} />
                 </div>
               </div>
               {hour.pop !== 0 && (
