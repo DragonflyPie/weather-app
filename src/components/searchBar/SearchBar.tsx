@@ -57,6 +57,7 @@ const SearchBar = () => {
 
   const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setQuery(e.target.value);
+    setActiveSuggestionIndex(-1);
     setShowDropDown(true);
   };
 
@@ -104,8 +105,8 @@ const SearchBar = () => {
   };
 
   const showSuggestions = async (): Promise<void> => {
-    await navigate("suggestions");
     await resetSearchUI();
+    await navigate("suggestions");
   };
 
   return (

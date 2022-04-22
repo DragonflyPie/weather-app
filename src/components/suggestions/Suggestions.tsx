@@ -26,11 +26,7 @@ const Suggestions = () => {
   }
 
   if (!suggestions?.length) {
-    return (
-      <div className="suggestions-list">
-        Нет локаций. Уточните назание места.
-      </div>
-    );
+    return <div className="error">Нет локаций. Уточните назание места.</div>;
   }
 
   return (
@@ -39,7 +35,7 @@ const Suggestions = () => {
         return (
           <li
             key={suggestion.value}
-            className="suggestion"
+            className="suggestions-list__item"
             onClick={() => handleSuggestionClick(suggestion)}
           >
             {suggestion.value}
