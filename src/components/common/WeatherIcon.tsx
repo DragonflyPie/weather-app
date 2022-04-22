@@ -8,6 +8,7 @@ import {
   BsCloudSnow,
   BsCloudSnowFill,
 } from "react-icons/bs";
+import { IconContext } from "react-icons";
 
 interface WeatherIconType {
   iconName: string;

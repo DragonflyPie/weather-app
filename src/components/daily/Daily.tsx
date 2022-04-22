@@ -17,13 +17,15 @@ import {
 import { RiWindyLine } from "react-icons/ri";
 import { BsSunrise, BsSunset } from "react-icons/bs";
 import MoonPhase from "../common/MoonPhase";
+import { Link } from "react-router-dom";
+import Spinner from "../common/Spinner";
 
 const Daily = () => {
   const weatherData = useAppSelector((state) => state.weather.value?.daily);
   const status = useAppSelector((state) => state.weather.status);
 
   if (status === "loading") {
-    return <div className="spinner">Loading...</div>;
+    return <Spinner />;
   }
   if (!weatherData) {
     return <div className="">Something went wrong</div>;
@@ -33,7 +35,9 @@ const Daily = () => {
     <div className="daily">
       {weatherData.map((day) => (
         <div key={day.dt} className="day">
-          <div className="day__dt">{dayFromDate(day.dt)}</div>
+          <Link to={`/day/${day.dt.toString()}`}>
+            <div className="day__dt">{dayFromDate(day.dt)}</div>
+          </Link>
           <div className="day__main">
             <div className="day__column right">
               <div>

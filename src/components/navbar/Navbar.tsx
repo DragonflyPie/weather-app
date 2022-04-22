@@ -6,11 +6,13 @@ import { fetchGeoLocationByIp } from "../../redux/locationSlice";
 import { NavLink } from "react-router-dom";
 import { WiDayFog } from "react-icons/wi";
 import Footer from "../footer/Footer";
+import logo from "./../../styles/icons/weather.png";
 
 const Navbar = () => {
   const dispatch = useAppDispatch();
   const location = useAppSelector((state) => state.location.value?.city);
   const region = useAppSelector((state) => state.location.value?.regionName);
+  const tomorrow = useAppSelector((state) => state.weather.value?.daily[1].dt);
 
   useEffect(() => {
     dispatch(fetchGeoLocationByIp());
@@ -20,7 +22,7 @@ const Navbar = () => {
     <>
       <div className="navbar">
         <div className="navbar__row">
-          <WiDayFog size={45} />
+          <img src={logo} alt="Logo" />
           <div className="navbar__column">
             <div className="navbar__location">
               {location}
@@ -39,7 +41,7 @@ const Navbar = () => {
             Сегодня
           </NavLink>
           <NavLink
-            to="tomorrow"
+            to={`day/${tomorrow}`}
             className={({ isActive }) =>
               isActive ? "navbar__link navbar__link--active" : "navbar__link"
             }

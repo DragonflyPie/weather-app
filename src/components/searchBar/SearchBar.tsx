@@ -7,7 +7,11 @@ import { flattenGeoData } from "../../utilities/utils";
 import DropDown from "../dropdown/DropDown";
 import { fetchLocationByQuery } from "../../redux/suggestionsSlice";
 import type { LocationGeoTree } from "../../utilities/types";
-import { IoSearchCircleOutline } from "react-icons/io5";
+import {
+  IoCloseOutline,
+  IoSearchCircleOutline,
+  IoSearchOutline,
+} from "react-icons/io5";
 
 const SearchBar = () => {
   const navigate = useNavigate();
@@ -116,8 +120,12 @@ const SearchBar = () => {
           onKeyDown={handleKeyPress}
           placeholder="Населенный пункт..."
         />
+        {/* <button className="search__button" onClick={resetSearchUI}>
+          <IoCloseOutline />
+        </button> */}
+
         <button className="search__button" onClick={showSuggestions}>
-          <IoSearchCircleOutline />
+          <IoSearchOutline />
         </button>
       </div>
       {showDropDown && (

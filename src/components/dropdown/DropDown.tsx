@@ -63,26 +63,9 @@ const DropDown = ({
         );
       });
     return <ul className="dropdown__list">{renderedSuggestions}</ul>;
-
-    //   )
-    // suggestions.slice(0, 5).map((location, index) => {
-    //   let suggestionClass = classNames({
-    //     search__suggestion: true,
-    //     "search__suggestion--active": index === activeSuggestionIndex,
-    //   });
-
-    //   return (
-    //     <li
-    //       key={location.value}
-    //       className={suggestionClass}
-    //       onClick={() => handleSuggestionClick(suggestions[index])}
-    //     >
-    //       {location.value}
-    //     </li>
-    //   );
-    // });
   }
-  return <div className="">Ничего не найдено</div>;
+
+  return <div className="dropdown__empty">Ничего не найдено</div>;
 };
 
 export default DropDown;

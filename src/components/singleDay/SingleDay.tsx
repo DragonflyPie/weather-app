@@ -17,97 +17,95 @@ import {
 import { BsSunrise, BsSunset } from "react-icons/bs";
 import { RiWindyLine } from "react-icons/ri";
 import MoonPhase from "../common/MoonPhase";
+import { useParams } from "react-router-dom";
+import Spinner from "../common/Spinner";
 
-interface SingleDayProps {
-  day: number;
-}
+const SingleDay = () => {
+  const { dt } = useParams();
+  const weatherData = useAppSelector((state) => state.weather.value?.daily);
+  const status = useAppSelector((state) => state.weather.status);
 
-const SingleDay = ({ day }: SingleDayProps) => {
-  const weatherData = useAppSelector(
-    (state) => state.weather.value?.daily[day]
-  );
+  if (status === "loading") {
+    return <Spinner />;
+  }
 
-  if (!weatherData) {
+  if (!weatherData || !dt) {
+    return <div className="weather">No data</div>;
+  }
+
+  const day = weatherData?.find((day) => day.dt === parseInt(dt));
+
+  if (!day) {
     return <div className="weather">No data</div>;
   }
 
   return (
     <div className="day-container">
       <div className="weather">
-        <div className="weather__dt">{dayFromDate(weatherData.dt)}</div>
+        <div className="weather__dt">{dayFromDate(day.dt)}</div>
         <div className="weather__main">
           <div className="weather__column right">
             <div>
               Утро:{" "}
-              <span className="bold">
-                {tempToString(weatherData.temp_day)}&#176;
-              </span>
+              <span className="bold">{tempToString(day.temp_morn)}&#176;</span>
             </div>
             <div>
               День:{" "}
-              <span className="bold">
-                {tempToString(weatherData.temp_day)}&#176;
-              </span>
+              <span className="bold">{tempToString(day.temp_day)}&#176;</span>
             </div>
             <div>
               Вечер:{" "}
-              <span className="bold">
-                {tempToString(weatherData.temp_day)}&#176;
-              </span>
+              <span className="bold">{tempToString(day.temp_eve)}&#176;</span>
             </div>
 
             <div className="weather__daynight-temp">
               Ночь:{" "}
-              <span className="bold">
-                {tempToString(weatherData.temp_night)}&#176;
-              </span>
+              <span className="bold">{tempToString(day.temp_night)}&#176;</span>
             </div>
           </div>
           <div className="weather__column">
-            <WeatherIcon iconName={weatherData.icon} />
-            <div className="weather__description">{weatherData.weather}</div>
+            <WeatherIcon iconName={day.icon} />
+            <div className="weather__description">{day.weather}</div>
           </div>
         </div>
         <div className="weather__bar">
           <div>
-            <WiHumidity /> {weatherData.humidity}%
+            <WiHumidity /> {day.humidity}%
           </div>
           <div>
-            <WiBarometer /> {convertPressure(weatherData.pressure)} мм рт.ст.
+            <WiBarometer /> {convertPressure(day.pressure)} мм рт.ст.
           </div>
         </div>
         <div className="weather__bar">
           <div className="weather__group">
             <RiWindyLine />
             <div className="weather__column left">
-              <div>Скорость - {weatherData.wind_speed.toFixed(0)} м/с</div>
-              <div>Порывы - {weatherData.wind_gust?.toFixed(1)} м/с</div>
+              <div>Скорость - {day.wind_speed.toFixed(0)} м/с</div>
+              <div>Порывы - {day.wind_gust?.toFixed(1)} м/с</div>
             </div>
           </div>
           <div className="weather__column">
-            <WiWindDeg
-              style={{ transform: `rotate(${weatherData.wind_deg}deg)` }}
-            />
-            {weatherData.wind_string}
+            <WiWindDeg style={{ transform: `rotate(${day.wind_deg}deg)` }} />
+            {day.wind_string}
           </div>
         </div>
         <div className="weather__bar">
           <div className="weather__group">
-            <BsSunrise /> {timeFromDate(weatherData.sunrise)}
+            <BsSunrise /> {timeFromDate(day.sunrise)}
           </div>
           <div className="weather__group">
-            <BsSunset /> {timeFromDate(weatherData.sunset)}
+            <BsSunset /> {timeFromDate(day.sunset)}
           </div>
         </div>
         <div className="weather__bar">
           <div className="weather__group">
-            <WiMoonrise /> {timeFromDate(weatherData.moonrise)}
+            <WiMoonrise /> {timeFromDate(day.moonrise)}
           </div>
           <div className="weather__moonphase">
-            <MoonPhase phase={weatherData.moonphase} />
+            <MoonPhase phase={day.moonphase} />
           </div>
           <div className="weather__group">
-            <WiMoonset /> {timeFromDate(weatherData.moonset)}
+            <WiMoonset /> {timeFromDate(day.moonset)}
           </div>
         </div>
       </div>

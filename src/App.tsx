@@ -15,9 +15,8 @@ function App() {
         <Route path="/" element={<Navbar />}>
           <Route index element={<Today />} />
           <Route path="daily" element={<Daily />} />
-          {/* <Route path="tomorrow" element={<Tomorrow />} /> */}
-          <Route path="tomorrow" element={<SingleDay day={1} />} />
           <Route path="suggestions" element={<Suggestions />} />
+          <Route path="day/:dt" element={<SingleDay />} />
         </Route>
       </Routes>
     </div>
