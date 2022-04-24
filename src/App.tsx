@@ -7,6 +7,7 @@ import SingleDay from "./components/singleDay/SingleDay";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./App.scss";
+import NoMatch from "./components/noMatch/NoMatch";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="daily" element={<Daily />} />
           <Route path="suggestions" element={<Suggestions />} />
           <Route path="day/:dt" element={<SingleDay />} />
+          <Route path="*" element={<NoMatch />} />
         </Route>
       </Routes>
     </div>

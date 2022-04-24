@@ -158,6 +158,7 @@ a {
     &:hover {
       text-shadow: 1px 1px 2px hsla(0, 0%, 27%, 0.3);
       cursor: pointer;
+      text-decoration: underline;
     }
   }
 }
@@ -434,4 +435,16 @@ a {
 .slick-arrow::before {
   color: base.$light !important;
   font-size: 1.5rem;
+}
+
+.no-match {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2em;
+
+  &__link {
+    color: base.$link;
+    text-decoration: underline;
+  }
 }

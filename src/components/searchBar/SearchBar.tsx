@@ -105,8 +105,8 @@ const SearchBar = () => {
   };
 
   const showSuggestions = async (): Promise<void> => {
-    await resetSearchUI();
     await navigate("suggestions");
+    await resetSearchUI();
   };
 
   return (
