@@ -1,10 +1,18 @@
 $white: hsl(0, 0%, 95%);
-$light: hsl(0, 0%, 65%);
-$dark: hsl(0, 0, 30%);
+$light-1: hsl(36, 100%, 83%);
+$light-2: hsl(209, 66%, 91%);
+$light-3: hsl(36, 0%, 81%);
+$light-4: hsl(36, 100%, 95%);
+$svg: hsl(0, 0, 20%);
+$arrows: hsl(0, 0, 40%);
 $black: hsl(0, 0, 5%);
-$link: hsl(224, 64%, 41%);
+$link: hsl(224, 66%, 45%);
 
 $full-width: 45rem;
+
+@media (max-width: 729px) {
+  $full-width: 25rem;
+}
 
 $font-headings: "Assistant", sans-serif;
 $font-main: "Roboto Slab", serif;

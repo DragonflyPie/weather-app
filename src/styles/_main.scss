@@ -8,23 +8,24 @@
   margin: 0;
 }
 
-body {
-  padding-left: 17px;
-  width: calc(100vw - 17px);
-}
-
 a {
   text-decoration: none;
   color: inherit;
 }
+
+// body {
+//   width: 100%;
+// }
+
 .app {
-  width: 100%;
+  // width: 100%;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   font-family: base.$font-main;
   font-weight: 300;
+  background-color: base.$light-4;
 }
 
 .navbar {
@@ -36,7 +37,7 @@ a {
   height: 9rem;
   width: 100%;
 
-  background-color: azure;
+  background-color: base.$light-1;
   z-index: 1;
 
   &__location {
@@ -59,22 +60,23 @@ a {
     display: flex;
     flex-direction: row;
     align-items: center;
-    width: 105%;
+    width: 100%;
     line-height: 2rem;
     align-items: center;
     gap: 3em;
     justify-content: center;
 
-    background-color: base.$light;
+    background-color: base.$light-3;
   }
 
   &__link {
     text-decoration: none;
-    color: black;
+    color: inherit;
     padding: 0 1em 0 1em;
 
     &--active {
-      background-color: darken(base.$light, 10%);
+      background-color: darken(base.$light-2, 10%);
+      border-radius: 0.25rem;
     }
   }
 }
@@ -83,12 +85,12 @@ a {
   display: flex;
   flex-wrap: nowrap;
   // gap: 0.15em;
-  width: 20rem;
+  // width: 20rem;
 
   &__input {
     padding: 0.2em 3em 0.1em 0.5em;
     width: 100%;
-    border: 0.05rem solid black;
+    border: 0.05rem solid base.$black;
     border-radius: 0.2rem;
     line-height: 1.7rem;
     font-size: 0.9rem;
@@ -137,20 +139,21 @@ a {
   }
 
   &__suggestion--active {
-    background-color: base.$light;
+    background-color: base.$light-1;
   }
 
   &__empty {
     padding: 0 0.5em;
   }
 }
+
 .suggestions-list {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  // width: 100%;
   text-align: left;
   list-style: none;
-  gap: 0.25em;
+  gap: 0.5em;
 
   &__item {
     color: base.$link;
@@ -164,27 +167,33 @@ a {
 }
 
 .content-container {
-  min-height: calc(100vh - 3rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 40%;
+  min-height: calc(100vh - 2.5rem);
 }
 
 .main {
   display: flex;
   flex-direction: column;
   margin-top: 10.5rem;
-  width: base.$full-width;
+  width: 100%;
   align-items: center;
   text-align: center;
 
   & svg {
     vertical-align: middle;
     font-size: 2rem;
-    color: rgb(36, 36, 36);
+    color: base.$svg;
     opacity: 0.6;
   }
 }
 
 .footer {
-  height: 3rem;
+  background-color: base.$light-3;
+  width: 100%;
+  height: 2.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -200,23 +209,25 @@ a {
   flex-direction: column;
   align-items: center;
   gap: 1em;
-  background-color: antiquewhite;
+  background-color: base.$light-2;
   border-radius: 0.5rem;
   padding: 1em;
+  margin-bottom: 1em;
 }
 
 .day-container {
-  background-color: antiquewhite;
+  background-color: base.$light-2;
   border-radius: 0.5rem;
   padding: 1em;
   width: 100%;
+  margin-bottom: 1em;
 }
 
 .day {
-  background-color: antiquewhite;
+  background-color: base.$light-2;
   border-radius: 0.5rem;
   padding: 1em;
-  width: 100%;
+  padding-top: 0.5em;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -233,7 +244,7 @@ a {
   &__bar {
     display: flex;
     align-items: center;
-    width: 100%;
+    // width: 100%;
     justify-content: space-between;
     padding: 0.5em 0;
   }
@@ -242,7 +253,7 @@ a {
     display: flex;
     align-items: center;
     width: 100%;
-    background-color: beige;
+    background-color: base.$light-1;
     border-radius: 0.5em;
     justify-content: space-between;
     padding: 1em 3em;
@@ -281,7 +292,7 @@ a {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5em;
+  gap: 1em;
 
   &__dt {
     font-size: 1.5rem;
@@ -290,7 +301,6 @@ a {
   &__bar {
     display: flex;
     align-items: center;
-    // justify-content: space-around;
     width: 100%;
     justify-content: space-between;
     padding: 0.5em 0;
@@ -303,7 +313,7 @@ a {
     gap: 8em;
     padding: 1.5em 0;
     justify-content: center;
-    background-color: beige;
+    background-color: base.$light-1;
     border-radius: 0.5em;
   }
 
@@ -330,8 +340,7 @@ a {
   }
 
   &__temp {
-    font-size: 2.5rem;
-    font-weight: 100;
+    font-size: 2rem;
     font-family: base.$font-main;
   }
 
@@ -344,13 +353,15 @@ a {
   display: flex;
   flex-direction: column;
   gap: 1em;
+  margin-bottom: 1em;
 }
 
 .hourly {
-  max-width: calc(base.$full-width - 3rem);
-  align-items: center;
-  justify-content: center;
-  display: flex;
+  max-width: 95%;
+
+  // align-items: center;
+  // justify-content: center;
+  // display: flex;1
 }
 
 .hour {
@@ -359,7 +370,7 @@ a {
   // gap: 0.2em;
   height: 100%;
   padding: 0.25em;
-  background-color: base.$light;
+  background-color: base.$light-1;
   border-radius: 0.25rem;
   text-align: center;
   justify-content: flex-start;
@@ -375,6 +386,7 @@ a {
 
   &__line {
     border-top: 0.05em solid black;
+    border-bottom: none;
     width: 50%;
     margin: 0.5em auto;
   }
@@ -405,7 +417,8 @@ a {
 
 .slick-slider {
   align-self: center;
-  width: calc(100% - 2rem);
+  // padding: 0;
+  // width: calc(100% - 2rem);
 }
 
 .slick-slide {
@@ -433,7 +446,7 @@ a {
 }
 
 .slick-arrow::before {
-  color: base.$light !important;
+  color: base.$arrows !important;
   font-size: 1.5rem;
 }
 
@@ -446,5 +459,45 @@ a {
   &__link {
     color: base.$link;
     text-decoration: underline;
+  }
+}
+@media (max-width: 1440px) {
+  .content-container {
+    width: 60%;
+  }
+}
+
+@media (max-width: 1028px) {
+  .weather__main {
+    gap: 4em;
+  }
+
+  .weather {
+    gap: 0.5em;
+  }
+  .day__main {
+    padding: 1em;
+  }
+
+  .content-container {
+    width: 80%;
+  }
+
+  .navbar img {
+    height: 3rem;
+  }
+}
+
+@media (max-width: 729px) {
+  .weather__main {
+    gap: 2em;
+  }
+
+  .weather {
+    padding: 0.25em;
+  }
+
+  .content-container {
+    width: 95%;
   }
 }
